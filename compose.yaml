@@ -1,0 +1,8 @@
+﻿services:
+  simplescriptwebsite:
+    image: simplescriptwebsite
+    build:
+      context: .
+      dockerfile: SimpleScriptWebSite/Dockerfile
+    ports:
+      - "10000:8080"

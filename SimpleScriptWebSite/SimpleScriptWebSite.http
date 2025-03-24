@@ -1,0 +1,6 @@
+@SimpleScriptWebSite_HostAddress = http://localhost:10000
+
+GET {{SimpleScriptWebSite_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

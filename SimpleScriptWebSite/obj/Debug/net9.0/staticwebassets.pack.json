@@ -1,0 +1,49 @@
+{
+  "Files": [
+    {
+      "Id": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/assets/AboutView-CdavRcB_.js",
+      "PackagePath": "staticwebassets/assets/AboutView-CdavRcB_.js"
+    },
+    {
+      "Id": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/assets/AboutView-DESNY04v.css",
+      "PackagePath": "staticwebassets/assets/AboutView-DESNY04v.css"
+    },
+    {
+      "Id": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/assets/index-BF2KYZDX.css",
+      "PackagePath": "staticwebassets/assets/index-BF2KYZDX.css"
+    },
+    {
+      "Id": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/assets/index-DSN7kXGj.js",
+      "PackagePath": "staticwebassets/assets/index-DSN7kXGj.js"
+    },
+    {
+      "Id": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/favicon.ico",
+      "PackagePath": "staticwebassets/favicon.ico"
+    },
+    {
+      "Id": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/index.html",
+      "PackagePath": "staticwebassets/index.html"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.SimpleScriptWebSite.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.SimpleScriptWebSite.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.build.SimpleScriptWebSite.props",
+      "PackagePath": "build\\SimpleScriptWebSite.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.buildMultiTargeting.SimpleScriptWebSite.props",
+      "PackagePath": "buildMultiTargeting\\SimpleScriptWebSite.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.buildTransitive.SimpleScriptWebSite.props",
+      "PackagePath": "buildTransitive\\SimpleScriptWebSite.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

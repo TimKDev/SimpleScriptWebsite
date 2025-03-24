@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "u61Xauwuh5c=",
+  "success": true,
+  "projectFilePath": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/SimpleScriptWebSite.csproj",
+  "expectedPackageFiles": [
+    "/home/tim/.nuget/packages/microsoft.aspnetcore.app.ref/9.0.3/microsoft.aspnetcore.app.ref.9.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
