@@ -12,3 +12,4 @@
 /home/tim/Source/projects/SimpleScriptWebSite/HelloWorld/obj/Debug/net9.0/HelloWorld.pdb
 /home/tim/Source/projects/SimpleScriptWebSite/HelloWorld/obj/Debug/net9.0/HelloWorld.genruntimeconfig.cache
 /home/tim/Source/projects/SimpleScriptWebSite/HelloWorld/obj/Debug/net9.0/ref/HelloWorld.dll
+/home/tim/Source/projects/SimpleScriptWebSite/HelloWorld/obj/Debug/net9.0/HelloWorld.sourcelink.json

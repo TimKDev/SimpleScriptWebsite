@@ -42,3 +42,4 @@
 /home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/bin/Debug/net9.0/ConsoleApp/HelloWorld.dll
 /home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/bin/Debug/net9.0/ConsoleApp/HelloWorld.deps.json
 /home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/bin/Debug/net9.0/ConsoleApp/HelloWorld.runtimeconfig.json
+/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/SimpleScriptWebSite.sourcelink.json

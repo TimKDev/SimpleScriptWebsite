@@ -11,9 +11,9 @@ public class ConsoleAppController : ControllerBase
 {
     /*
      * TODOS:
-     * - Generellen Timeout von 30s hinzu
-     * - Füge korrektes Error Handeling hinzu mit entsprechendem Resource Handeling hinzu
-     * - Starte den Process in einem Docker Container mit nur geringen Resourcen
+     * - Starte den Process in einem Docker Container mit nur geringen Resourcen => Docker in Docker Szenario verstehen
+     * - Statt für jedes Request einen Docker zu erstellen, verwende lieber einen Docker Pool der dann von den unterschiedlichen Requests
+     * verwendet werden kann
      * - Abstrahiere diese Funktionalität zu einer eigenen Library, die generell verwendet werden kann, um Consolenanwendungen im Web darzustellen
      * - Definiere entsprechende Settings für diese Library
      */
@@ -49,10 +49,11 @@ public class ConsoleAppController : ControllerBase
         }
 
         var receivedMessage = Encoding.UTF8.GetString(buffer, 0, receiveResult.Count);
-        using var process = CreateProcess(webSocket, receivedMessage);
+        using var process = CreateDockerizedProcess(webSocket, receivedMessage);
         Start(process);
+        var timeoutTask = Task.Delay(TimeSpan.FromSeconds(30), cancellationToken);
 
-        while (!process.HasExited)
+        while (!process.HasExited && !timeoutTask.IsCompleted)
         {
             receiveResult = await webSocket.ReceiveAsync(
                 new ArraySegment<byte>(buffer), cancellationToken);
@@ -119,5 +120,56 @@ public class ConsoleAppController : ControllerBase
             var inputValue = message.Split(":")[1];
             await process.StandardInput.WriteLineAsync(inputValue);
         }
+    }
+
+    private Process CreateDockerizedProcess(WebSocket webSocket, string command)
+    {
+        // Create a unique container name for this execution
+        string containerId = Guid.NewGuid().ToString("N");
+        var testPath = Path.GetFullPath("ConsoleApp");
+        var process = new Process
+        {
+            StartInfo = new ProcessStartInfo
+            {
+                FileName = "docker",
+                // Run the container with:
+                // - Resource limits (memory, CPU)
+                // - Removed network access
+                // - Clean removal when done
+                // - Volume mount for the app
+                // - Command to run
+                Arguments = $"run --rm -i" +
+                            $"--name script-container-{containerId} " +
+                            $"--memory=128m --cpus=0.2 " +
+                            $"--network none " +
+                            $"-v {Path.GetFullPath("ConsoleApp")}:/app " +
+                            $"--workdir /app " +
+                            $"mcr.microsoft.com/dotnet/runtime:9.0 " +
+                            $"dotnet HelloWorld.dll {command}",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                RedirectStandardInput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            }
+        };
+
+        process.OutputDataReceived += async (sender, e) =>
+        {
+            if (!string.IsNullOrEmpty(e.Data))
+            {
+                await SendMessageAsync(webSocket, $"output:{e.Data}");
+            }
+        };
+
+        process.ErrorDataReceived += async (sender, e) =>
+        {
+            if (!string.IsNullOrEmpty(e.Data))
+            {
+                await SendMessageAsync(webSocket, $"error:{e.Data}");
+            }
+        };
+
+        return process;
     }
 }
