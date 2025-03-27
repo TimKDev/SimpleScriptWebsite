@@ -13,7 +13,7 @@
       </Content>
       <Content Remove="ConsoleApp\HelloWorld.deps.json" />
       <Content Remove="ConsoleApp\HelloWorld.runtimeconfig.json" />
-      <None Include="ConsoleApp\**" CopyToOutputDirectory="PreserveNewest" />
+      <Content Include="ConsoleApp\**" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
 
     <Target Name="BuildVue" BeforeTargets="Build">

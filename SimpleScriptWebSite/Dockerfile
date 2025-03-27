@@ -21,6 +21,7 @@ RUN dotnet publish "SimpleScriptWebSite.csproj" -c $BUILD_CONFIGURATION -o /app/
 FROM base AS final
 WORKDIR /app
 # Install Docker CLI
+USER root
 RUN apt-get update && apt-get install -y \
     apt-transport-https \
     ca-certificates \

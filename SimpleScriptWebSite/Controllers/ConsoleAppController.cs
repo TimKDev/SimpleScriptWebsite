@@ -126,7 +126,6 @@ public class ConsoleAppController : ControllerBase
     {
         // Create a unique container name for this execution
         string containerId = Guid.NewGuid().ToString("N");
-        var testPath = Path.GetFullPath("ConsoleApp");
         var process = new Process
         {
             StartInfo = new ProcessStartInfo
@@ -138,14 +137,13 @@ public class ConsoleAppController : ControllerBase
                 // - Clean removal when done
                 // - Volume mount for the app
                 // - Command to run
-                Arguments = $"run --rm -i" +
+                Arguments = $"run --rm -i " + 
                             $"--name script-container-{containerId} " +
                             $"--memory=128m --cpus=0.2 " +
                             $"--network none " +
                             $"-v {Path.GetFullPath("ConsoleApp")}:/app " +
-                            $"--workdir /app " +
                             $"mcr.microsoft.com/dotnet/runtime:9.0 " +
-                            $"dotnet HelloWorld.dll {command}",
+                            $"dotnet /app/HelloWorld.dll {command}",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 RedirectStandardInput = true,
