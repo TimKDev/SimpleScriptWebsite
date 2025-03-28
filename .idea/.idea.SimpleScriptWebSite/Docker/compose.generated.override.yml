@@ -27,10 +27,10 @@ services:
     - "127.0.0.1:57009:57100"
     - "127.0.0.1:57209:57300"
     volumes:
-    - "/home/tim/.nuget/packages:/home/app/.nuget/packages"
+    - "/home/tim/.nuget/packages:/root/.nuget/packages"
     - "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite:/app:rw"
     - "/home/tim/Source/projects/SimpleScriptWebSite:/src:rw"
     - "/home/tim/.local/share/JetBrains/RiderRemoteDebugger/2024.2.5/Linux64:/opt/rider-debugger"
     - "/home/tim/applications/rider/bin:/etc/opt/rider-debugger/backend-log.xml"
-    - "/home/tim/.cache/JetBrains/Rider2024.2/log/DebuggerWorker/JetBrains.Debugger.Worker.2025_3_27_05_57_55:/var/opt/rider-debugger:rw"
+    - "/home/tim/.cache/JetBrains/Rider2024.2/log/DebuggerWorker/JetBrains.Debugger.Worker.2025_3_28_07_31_13:/var/opt/rider-debugger:rw"
     working_dir: "/app"

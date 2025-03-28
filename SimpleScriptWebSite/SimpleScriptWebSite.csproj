@@ -16,6 +16,10 @@
       <Content Include="ConsoleApp\**" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Docker.DotNet" Version="3.125.15" />
+    </ItemGroup>
+
     <Target Name="BuildVue" BeforeTargets="Build">
         <Exec Command="npm install" WorkingDirectory="Frontend" />
         <Exec Command="npm run build-only" WorkingDirectory="Frontend" />

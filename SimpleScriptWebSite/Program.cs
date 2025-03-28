@@ -1,6 +1,9 @@
+using SimpleScriptWebSite.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddSimpleScriptWebSiteServices();
 
 if (builder.Environment.IsDevelopment())
 {

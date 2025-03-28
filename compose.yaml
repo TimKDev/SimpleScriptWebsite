@@ -4,6 +4,7 @@
     build:
       context: .
       dockerfile: SimpleScriptWebSite/Dockerfile
+    user: root
     ports:
       - "10000:8080"
     volumes:

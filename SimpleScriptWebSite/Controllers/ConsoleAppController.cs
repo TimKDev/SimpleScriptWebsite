@@ -18,6 +18,13 @@ public class ConsoleAppController : ControllerBase
      * - Definiere entsprechende Settings für diese Library
      */
 
+    private readonly IDockerDotNetRunner _dockerDotNetRunner;
+
+    public ConsoleAppController(IDockerDotNetRunner dockerDotNetRunner)
+    {
+        _dockerDotNetRunner = dockerDotNetRunner;
+    }
+
     [HttpGet("/ws")]
     public async Task Get(CancellationToken cancellationToken)
     {
@@ -49,18 +56,23 @@ public class ConsoleAppController : ControllerBase
         }
 
         var receivedMessage = Encoding.UTF8.GetString(buffer, 0, receiveResult.Count);
-        using var process = CreateDockerizedProcess(webSocket, receivedMessage);
-        Start(process);
-        var timeoutTask = Task.Delay(TimeSpan.FromSeconds(30), cancellationToken);
+        using var process = CreateDockerSession(webSocket, receivedMessage);
 
-        while (!process.HasExited && !timeoutTask.IsCompleted)
+        var timeoutTask = Task.Delay(TimeSpan.FromSeconds(60), cancellationToken);
+        while (timeoutTask.IsCompleted == false)
         {
-            receiveResult = await webSocket.ReceiveAsync(
-                new ArraySegment<byte>(buffer), cancellationToken);
-
-            var message = Encoding.UTF8.GetString(buffer, 0, receiveResult.Count);
-            await HandleIncomingMessageAsync(process, message, cancellationToken);
         }
+        // Start(process);
+        // var timeoutTask = Task.Delay(TimeSpan.FromSeconds(30), cancellationToken);
+        //
+        // while (!process.HasExited && !timeoutTask.IsCompleted)
+        // {
+        //     receiveResult = await webSocket.ReceiveAsync(
+        //         new ArraySegment<byte>(buffer), cancellationToken);
+        //
+        //     var message = Encoding.UTF8.GetString(buffer, 0, receiveResult.Count);
+        //     await HandleIncomingMessageAsync(process, message, cancellationToken);
+        // }
     }
 
     private static void Start(Process process)
@@ -122,52 +134,27 @@ public class ConsoleAppController : ControllerBase
         }
     }
 
-    private Process CreateDockerizedProcess(WebSocket webSocket, string command)
+    private async Task<ContainerSession> CreateDockerSession(WebSocket webSocket, string command)
     {
-        // Create a unique container name for this execution
-        string containerId = Guid.NewGuid().ToString("N");
-        var process = new Process
+        var dockerSession =
+            await _dockerDotNetRunner.RunDotNetDllAsync("ConsoleApp/HelloWorld.dll", null, null, 256, 0.5);
+
+        dockerSession.OutputReceived += async (sender, e) =>
         {
-            StartInfo = new ProcessStartInfo
+            if (!string.IsNullOrEmpty(e))
             {
-                FileName = "docker",
-                // Run the container with:
-                // - Resource limits (memory, CPU)
-                // - Removed network access
-                // - Clean removal when done
-                // - Volume mount for the app
-                // - Command to run
-                Arguments = $"run --rm -i " + 
-                            $"--name script-container-{containerId} " +
-                            $"--memory=128m --cpus=0.2 " +
-                            $"--network none " +
-                            $"-v {Path.GetFullPath("ConsoleApp")}:/app " +
-                            $"mcr.microsoft.com/dotnet/runtime:9.0 " +
-                            $"dotnet /app/HelloWorld.dll {command}",
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                RedirectStandardInput = true,
-                UseShellExecute = false,
-                CreateNoWindow = true
+                await SendMessageAsync(webSocket, $"output:{e}");
             }
         };
 
-        process.OutputDataReceived += async (sender, e) =>
+        dockerSession.ErrorReceived += async (sender, e) =>
         {
-            if (!string.IsNullOrEmpty(e.Data))
+            if (!string.IsNullOrEmpty(e))
             {
-                await SendMessageAsync(webSocket, $"output:{e.Data}");
+                await SendMessageAsync(webSocket, $"error:{e}");
             }
         };
 
-        process.ErrorDataReceived += async (sender, e) =>
-        {
-            if (!string.IsNullOrEmpty(e.Data))
-            {
-                await SendMessageAsync(webSocket, $"error:{e.Data}");
-            }
-        };
-
-        return process;
+        return dockerSession;
     }
 }
