@@ -31,11 +31,14 @@ public class ContainerSession : IDisposable
     public async Task SendInputAsync(string input, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrEmpty(input))
+        {
             return;
+        }
 
-        // Ensure input ends with a newline
         if (!input.EndsWith('\n'))
+        {
             input += "\n";
+        }
 
         var bytes = Encoding.UTF8.GetBytes(input);
         await _stream.WriteAsync(bytes, 0, bytes.Length, cancellationToken);

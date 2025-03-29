@@ -56,23 +56,25 @@ public class ConsoleAppController : ControllerBase
         }
 
         var receivedMessage = Encoding.UTF8.GetString(buffer, 0, receiveResult.Count);
-        using var process = CreateDockerSession(webSocket, receivedMessage);
+        using var dockerSession = await StartDockerSessionAsync(webSocket, receivedMessage);
 
-        var timeoutTask = Task.Delay(TimeSpan.FromSeconds(60), cancellationToken);
-        while (timeoutTask.IsCompleted == false)
+        var timeoutTask = Task.Delay(TimeSpan.FromSeconds(30), cancellationToken);
+        var processExited = false; //TODO Finde heraus das der Prozess im Docker korrekt beendet wurde
+
+        while (!processExited && !timeoutTask.IsCompleted)
         {
+            receiveResult = await webSocket.ReceiveAsync(
+                new ArraySegment<byte>(buffer), cancellationToken);
+
+            var message = Encoding.UTF8.GetString(buffer, 0, receiveResult.Count);
+
+            if (message.StartsWith("input"))
+            {
+                //websocket input form: "input:{value}"
+                var inputValue = message.Split(":")[1];
+                await dockerSession.SendInputAsync(inputValue, cancellationToken);
+            }
         }
-        // Start(process);
-        // var timeoutTask = Task.Delay(TimeSpan.FromSeconds(30), cancellationToken);
-        //
-        // while (!process.HasExited && !timeoutTask.IsCompleted)
-        // {
-        //     receiveResult = await webSocket.ReceiveAsync(
-        //         new ArraySegment<byte>(buffer), cancellationToken);
-        //
-        //     var message = Encoding.UTF8.GetString(buffer, 0, receiveResult.Count);
-        //     await HandleIncomingMessageAsync(process, message, cancellationToken);
-        // }
     }
 
     private static void Start(Process process)
@@ -134,7 +136,7 @@ public class ConsoleAppController : ControllerBase
         }
     }
 
-    private async Task<ContainerSession> CreateDockerSession(WebSocket webSocket, string command)
+    private async Task<ContainerSession> StartDockerSessionAsync(WebSocket webSocket, string command)
     {
         var dockerSession =
             await _dockerDotNetRunner.RunDotNetDllAsync("ConsoleApp/HelloWorld.dll", null, null, 256, 0.5);
