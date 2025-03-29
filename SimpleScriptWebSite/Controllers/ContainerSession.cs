@@ -8,25 +8,21 @@ public class ContainerSession : IDisposable
 {
     private readonly DockerClient _client;
     private readonly MultiplexedStream _stream;
-    private CancellationTokenSource _cts;
+    private readonly CancellationTokenSource _cts;
     private readonly byte[] _buffer = new byte[81920];
-    private bool _disposedValue;
+    private readonly string _containerId;
 
-    public string ContainerId { get; }
-    public event EventHandler<string> OutputReceived;
-    public event EventHandler<string> ErrorReceived;
+    public event EventHandler<string>? OutputReceived;
+    public event EventHandler<string>? ErrorReceived;
 
     public ContainerSession(string containerId, DockerClient client, MultiplexedStream stream)
     {
-        ContainerId = containerId;
+        _containerId = containerId;
         _client = client;
         _stream = stream;
         _cts = new CancellationTokenSource();
-
-        // Start reading stream outputs
         Task.Run(() => ReadOutputAsync(_cts.Token));
     }
-
 
     public async Task SendInputAsync(string input, CancellationToken cancellationToken = default)
     {
@@ -44,12 +40,20 @@ public class ContainerSession : IDisposable
         await _stream.WriteAsync(bytes, 0, bytes.Length, cancellationToken);
     }
 
-    public async Task StopContainerAsync()
+    public void Dispose()
+    {
+        _cts.Cancel();
+        _cts.Dispose();
+        _stream.Dispose();
+        _ = StopContainerAsync();
+    }
+
+    private async Task StopContainerAsync()
     {
         try
         {
             await _client.Containers.StopContainerAsync(
-                ContainerId,
+                _containerId,
                 new ContainerStopParameters
                 {
                     WaitBeforeKillSeconds = 10
@@ -57,7 +61,7 @@ public class ContainerSession : IDisposable
             );
 
             await _client.Containers.RemoveContainerAsync(
-                ContainerId,
+                _containerId,
                 new ContainerRemoveParameters
                 {
                     Force = true
@@ -67,28 +71,6 @@ public class ContainerSession : IDisposable
         catch (Exception ex)
         {
             Console.WriteLine($"Error stopping container: {ex.Message}");
-        }
-    }
-
-    public void Dispose()
-    {
-        Dispose(disposing: true);
-        GC.SuppressFinalize(this);
-    }
-
-    protected virtual void Dispose(bool disposing)
-    {
-        if (!_disposedValue)
-        {
-            if (disposing)
-            {
-                _cts?.Cancel();
-                _cts?.Dispose();
-                _cts = null;
-                _stream?.Dispose();
-            }
-
-            _disposedValue = true;
         }
     }
 
@@ -113,10 +95,6 @@ public class ContainerSession : IDisposable
                     ErrorReceived?.Invoke(this, message);
                 }
             }
-        }
-        catch (OperationCanceledException)
-        {
-            // Cancellation is expected
         }
         catch (Exception ex)
         {
