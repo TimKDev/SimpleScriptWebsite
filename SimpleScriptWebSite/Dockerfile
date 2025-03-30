@@ -23,7 +23,6 @@ RUN dotnet publish "SimpleScriptWebSite.csproj" -c $BUILD_CONFIGURATION -o /app/
 
 FROM base AS final
 WORKDIR /app
-# Install Docker CLI and set up non-root user with Docker access
 USER root 
 RUN apt-get update && apt-get install -y \
     apt-transport-https \

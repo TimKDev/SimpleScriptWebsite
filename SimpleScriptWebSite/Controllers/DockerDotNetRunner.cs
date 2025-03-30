@@ -9,8 +9,10 @@ public class DockerDotNetRunner : IDockerDotNetRunner
 
     public DockerDotNetRunner()
     {
-        //The host docker demon socket is added to the container using a volume in the docker compose
-        _client = new DockerClientConfiguration(new Uri("unix:///var/run/docker.sock")).CreateClient();
+        // Get the DOCKER_HOST environment variable (provided by compose file)
+        var dockerHost = Environment.GetEnvironmentVariable("DOCKER_HOST") ?? "unix:///var/run/docker.sock";
+        
+        _client = new DockerClientConfiguration(new Uri(dockerHost)).CreateClient();
     }
 
     public async Task<ContainerSession> RunDotNetDllAsync(
@@ -69,7 +71,8 @@ public class DockerDotNetRunner : IDockerDotNetRunner
                     Binds = new List<string>
                     {
                         //Put Path into appsettings
-                        $"/home/tim/Source/projects/SimpleScriptWebSite/ConsoleApp:/app"
+                        //$"/home/tim/Source/projects/SimpleScriptWebSite/ConsoleApp:/app"
+                        $"/ConsoleApp:/app"
                     }
                 },
                 Env = ConvertEnvironmentVariables(environmentVariables),

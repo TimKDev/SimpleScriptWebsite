@@ -4,8 +4,33 @@
     build:
       context: .
       dockerfile: SimpleScriptWebSite/Dockerfile
-    user: root
     ports:
       - "10000:8080"
+    environment:
+      - DOCKER_HOST=tcp://docker:2375
+      #- DOCKER_HOST=https://docker:2376
+      #- DOCKER_TLS_VERIFY=1
+      #- DOCKER_CERT_PATH=/certs/client
+    depends_on:
+      - docker
+    #volumes:
+    #  - docker-certs:/certs/client:ro
+
+  docker:
+    image: docker:dind
+    privileged: true
+    environment:
+      DOCKER_TLS_CERTDIR: ""
+      DOCKERD_OPTS: "-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --tlsverify=false"
+      #DOCKER_TLS_CERTDIR: "/certs/client"
+    ports:
+      - "2375:2375"
+      #- "2376:2376"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - docker-data:/var/lib/docker
+      - /home/tim/Source/projects/SimpleScriptWebSite/ConsoleApp:/ConsoleApp
+      #- docker-certs:/certs/client
+
+volumes:
+  docker-certs:
+  docker-data:
