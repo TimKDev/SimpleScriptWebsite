@@ -1,11 +1,11 @@
-namespace SimpleScriptWebSite.Controllers;
+using SimpleScriptWebSite.Services;
+
+namespace SimpleScriptWebSite.Interfaces;
 
 public interface IDockerDotNetRunner
 {
-    Task<ContainerSession> RunDotNetDllAsync(
-        string dllPath,
+    Task<ContainerSession> RunDotNetDllAsync(string dllPath,
         string[]? args = null,
-        Dictionary<string, string>? environmentVariables = null,
         int? memoryLimit = null,
         double? cpuLimit = null,
         CancellationToken cancellationToken = default);

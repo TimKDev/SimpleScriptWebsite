@@ -2,7 +2,7 @@ using System.Text;
 using Docker.DotNet;
 using Docker.DotNet.Models;
 
-namespace SimpleScriptWebSite.Controllers;
+namespace SimpleScriptWebSite.Services;
 
 public class ContainerSession : IDisposable
 {
@@ -50,28 +50,21 @@ public class ContainerSession : IDisposable
 
     private async Task StopContainerAsync()
     {
-        try
-        {
-            await _client.Containers.StopContainerAsync(
-                _containerId,
-                new ContainerStopParameters
-                {
-                    WaitBeforeKillSeconds = 10
-                }
-            );
+        await _client.Containers.StopContainerAsync(
+            _containerId,
+            new ContainerStopParameters
+            {
+                WaitBeforeKillSeconds = 10
+            }
+        );
 
-            await _client.Containers.RemoveContainerAsync(
-                _containerId,
-                new ContainerRemoveParameters
-                {
-                    Force = true
-                }
-            );
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error stopping container: {ex.Message}");
-        }
+        await _client.Containers.RemoveContainerAsync(
+            _containerId,
+            new ContainerRemoveParameters
+            {
+                Force = true
+            }
+        );
     }
 
     private async Task ReadOutputAsync(CancellationToken cancellationToken)

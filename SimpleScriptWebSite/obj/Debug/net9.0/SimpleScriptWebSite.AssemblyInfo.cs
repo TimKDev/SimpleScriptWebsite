@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SimpleScriptWebSite")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+84437657cc757f6a316284489b80ff94b8ff1004")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0eeda753d85ec4324f349460b3af23e91396f23b")]
 [assembly: System.Reflection.AssemblyProductAttribute("SimpleScriptWebSite")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SimpleScriptWebSite")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
