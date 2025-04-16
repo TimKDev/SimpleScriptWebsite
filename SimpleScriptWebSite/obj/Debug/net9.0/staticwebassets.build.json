@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "sBcgfdzAAiomM9J2iF1epXv+qLMTR2yJ0SJe2hp8sFc=",
+  "Hash": "6mN5zCd7fPIzevcEAsSfL04dngb4VeSvfLjVhwE2/TQ=",
   "Source": "SimpleScriptWebSite",
   "BasePath": "_content/SimpleScriptWebSite",
   "Mode": "Default",
@@ -38,25 +38,25 @@
       "OriginalItemSpec": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/assets/AboutView-DESNY04v.css"
     },
     {
-      "Identity": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/5r8o64z0za-dz0xt2bngd.gz",
+      "Identity": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/4a9slmly0s-i6frjq0a7w.gz",
       "SourceId": "SimpleScriptWebSite",
       "SourceType": "Discovered",
       "ContentRoot": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/",
       "BasePath": "_content/SimpleScriptWebSite",
-      "RelativePath": "assets/index-DSN7kXGj#[.{fingerprint=dz0xt2bngd}]?.js.gz",
+      "RelativePath": "assets/AboutView-CyhPi_QM#[.{fingerprint=i6frjq0a7w}]?.js.gz",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Alternative",
       "AssetMergeBehavior": "",
       "AssetMergeSource": "",
-      "RelatedAsset": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/assets/index-DSN7kXGj.js",
+      "RelatedAsset": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/assets/AboutView-CyhPi_QM.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "19i21opv27",
-      "Integrity": "G+bUQwEM9eWEhJBhU1TY2shDgfvyJ7Gj13Ai4NV87c8=",
+      "Fingerprint": "0tcny8amfk",
+      "Integrity": "bL2jDvZQP4uFT9Zp27IduWnj9hFaLo3OvgtsaMRUhsw=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/assets/index-DSN7kXGj.js"
+      "OriginalItemSpec": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/assets/AboutView-CyhPi_QM.js"
     },
     {
       "Identity": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/8i96xlqsfe-r8e75ffup4.gz",
@@ -80,12 +80,33 @@
       "OriginalItemSpec": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/favicon.ico"
     },
     {
-      "Identity": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/9dk4siv0hv-e682597l39.gz",
+      "Identity": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/95y7knjdhn-esay0id982.gz",
       "SourceId": "SimpleScriptWebSite",
       "SourceType": "Discovered",
       "ContentRoot": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/",
       "BasePath": "_content/SimpleScriptWebSite",
-      "RelativePath": "index#[.{fingerprint=e682597l39}]?.html.gz",
+      "RelativePath": "assets/index-6YVnfPEr#[.{fingerprint=esay0id982}]?.js.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/assets/index-6YVnfPEr.js",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "u5tq1gk6n2",
+      "Integrity": "3khX1KKRNKHZ2dsrSNJJ4h3qTK1LoOsDsB7wvD91Mc8=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/assets/index-6YVnfPEr.js"
+    },
+    {
+      "Identity": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/9dk4siv0hv-97u05g09j4.gz",
+      "SourceId": "SimpleScriptWebSite",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/",
+      "BasePath": "_content/SimpleScriptWebSite",
+      "RelativePath": "index#[.{fingerprint=97u05g09j4}]?.html.gz",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Alternative",
@@ -94,32 +115,11 @@
       "RelatedAsset": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/index.html",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "1ewtespvlh",
-      "Integrity": "OVdBW4yExwcDJWg5HAqPN2iw+Hckc7LwA4EiKCeqQS0=",
+      "Fingerprint": "pccjbqbwq1",
+      "Integrity": "t/eHPzSVTTr4gBn8AmyzJfN4klyXA0RLRcaJvKnL79M=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/index.html"
-    },
-    {
-      "Identity": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/jlr69mk91c-4s357hvovp.gz",
-      "SourceId": "SimpleScriptWebSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/",
-      "BasePath": "_content/SimpleScriptWebSite",
-      "RelativePath": "assets/AboutView-CdavRcB_#[.{fingerprint=4s357hvovp}]?.js.gz",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Alternative",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
-      "RelatedAsset": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/assets/AboutView-CdavRcB_.js",
-      "AssetTraitName": "Content-Encoding",
-      "AssetTraitValue": "gzip",
-      "Fingerprint": "hl5tym4c9a",
-      "Integrity": "lXseKIM8I9wekxiGK46yjDT3O9k3Q5bUQLzRhtSVTZs=",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/assets/AboutView-CdavRcB_.js"
     },
     {
       "Identity": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/uh2gsisqpr-llevxlhfkx.gz",
@@ -143,12 +143,12 @@
       "OriginalItemSpec": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/assets/index-BF2KYZDX.css"
     },
     {
-      "Identity": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/assets/AboutView-CdavRcB_.js",
+      "Identity": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/assets/AboutView-CyhPi_QM.js",
       "SourceId": "SimpleScriptWebSite",
       "SourceType": "Discovered",
       "ContentRoot": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/",
       "BasePath": "_content/SimpleScriptWebSite",
-      "RelativePath": "assets/AboutView-CdavRcB_#[.{fingerprint}]?.js",
+      "RelativePath": "assets/AboutView-CyhPi_QM#[.{fingerprint}]?.js",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -157,11 +157,11 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "4s357hvovp",
-      "Integrity": "ZN2HgkJYWFUedPGgQytJYO2I5N5dNKvLMI11hXxHx9A=",
+      "Fingerprint": "i6frjq0a7w",
+      "Integrity": "mqDEMbHmSI5HyNIl2D+WduN4EBXDTzas32fGcGgzxKw=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot/assets/AboutView-CdavRcB_.js"
+      "OriginalItemSpec": "wwwroot/assets/AboutView-CyhPi_QM.js"
     },
     {
       "Identity": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/assets/AboutView-DESNY04v.css",
@@ -185,6 +185,27 @@
       "OriginalItemSpec": "wwwroot/assets/AboutView-DESNY04v.css"
     },
     {
+      "Identity": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/assets/index-6YVnfPEr.js",
+      "SourceId": "SimpleScriptWebSite",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/",
+      "BasePath": "_content/SimpleScriptWebSite",
+      "RelativePath": "assets/index-6YVnfPEr#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "esay0id982",
+      "Integrity": "HgP8oj493ukhO1UIR7EM3iXVVXXLh8UDxI/HmjEBeAI=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/assets/index-6YVnfPEr.js"
+    },
+    {
       "Identity": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/assets/index-BF2KYZDX.css",
       "SourceId": "SimpleScriptWebSite",
       "SourceType": "Discovered",
@@ -204,27 +225,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/assets/index-BF2KYZDX.css"
-    },
-    {
-      "Identity": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/assets/index-DSN7kXGj.js",
-      "SourceId": "SimpleScriptWebSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/",
-      "BasePath": "_content/SimpleScriptWebSite",
-      "RelativePath": "assets/index-DSN7kXGj#[.{fingerprint}]?.js",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "Fingerprint": "dz0xt2bngd",
-      "Integrity": "x4d6X6sYMbvLGEHEur1rFcht6dBaOJavk9U0WFUNSbo=",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot/assets/index-DSN7kXGj.js"
     },
     {
       "Identity": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/favicon.ico",
@@ -262,8 +262,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "e682597l39",
-      "Integrity": "5i4t/e/sO9pQf6CM0H4kEgy/5wAIQ2K48yNeE5IIpRs=",
+      "Fingerprint": "97u05g09j4",
+      "Integrity": "G8IxfQV2Z+iTJ+So+fbBp9tqI7JEJQd+BpfmCSxWMWI=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/index.html"
@@ -271,13 +271,13 @@
   ],
   "Endpoints": [
     {
-      "Route": "assets/AboutView-CdavRcB_.4s357hvovp.js",
-      "AssetFile": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/jlr69mk91c-4s357hvovp.gz",
+      "Route": "assets/AboutView-CyhPi_QM.i6frjq0a7w.js",
+      "AssetFile": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/4a9slmly0s-i6frjq0a7w.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.001029866117"
+          "Quality": "0.001031991744"
         }
       ],
       "ResponseHeaders": [
@@ -287,15 +287,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "970"
+          "Value": "968"
         },
         {
           "Name": "ETag",
-          "Value": "\"lXseKIM8I9wekxiGK46yjDT3O9k3Q5bUQLzRhtSVTZs=\""
+          "Value": "\"bL2jDvZQP4uFT9Zp27IduWnj9hFaLo3OvgtsaMRUhsw=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -315,27 +315,27 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"ZN2HgkJYWFUedPGgQytJYO2I5N5dNKvLMI11hXxHx9A=\""
+          "Value": "W/\"mqDEMbHmSI5HyNIl2D+WduN4EBXDTzas32fGcGgzxKw=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "4s357hvovp"
+          "Value": "i6frjq0a7w"
         },
         {
           "Name": "label",
-          "Value": "assets/AboutView-CdavRcB_.js"
+          "Value": "assets/AboutView-CyhPi_QM.js"
         },
         {
           "Name": "integrity",
-          "Value": "sha256-ZN2HgkJYWFUedPGgQytJYO2I5N5dNKvLMI11hXxHx9A="
+          "Value": "sha256-mqDEMbHmSI5HyNIl2D+WduN4EBXDTzas32fGcGgzxKw="
         }
       ]
     },
     {
-      "Route": "assets/AboutView-CdavRcB_.4s357hvovp.js",
-      "AssetFile": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/assets/AboutView-CdavRcB_.js",
+      "Route": "assets/AboutView-CyhPi_QM.i6frjq0a7w.js",
+      "AssetFile": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/assets/AboutView-CyhPi_QM.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -352,11 +352,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"ZN2HgkJYWFUedPGgQytJYO2I5N5dNKvLMI11hXxHx9A=\""
+          "Value": "\"mqDEMbHmSI5HyNIl2D+WduN4EBXDTzas32fGcGgzxKw=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -366,21 +366,21 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "4s357hvovp"
+          "Value": "i6frjq0a7w"
         },
         {
           "Name": "label",
-          "Value": "assets/AboutView-CdavRcB_.js"
+          "Value": "assets/AboutView-CyhPi_QM.js"
         },
         {
           "Name": "integrity",
-          "Value": "sha256-ZN2HgkJYWFUedPGgQytJYO2I5N5dNKvLMI11hXxHx9A="
+          "Value": "sha256-mqDEMbHmSI5HyNIl2D+WduN4EBXDTzas32fGcGgzxKw="
         }
       ]
     },
     {
-      "Route": "assets/AboutView-CdavRcB_.4s357hvovp.js.gz",
-      "AssetFile": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/jlr69mk91c-4s357hvovp.gz",
+      "Route": "assets/AboutView-CyhPi_QM.i6frjq0a7w.js.gz",
+      "AssetFile": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/4a9slmly0s-i6frjq0a7w.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -389,7 +389,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "970"
+          "Value": "968"
         },
         {
           "Name": "Content-Type",
@@ -397,11 +397,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"lXseKIM8I9wekxiGK46yjDT3O9k3Q5bUQLzRhtSVTZs=\""
+          "Value": "\"bL2jDvZQP4uFT9Zp27IduWnj9hFaLo3OvgtsaMRUhsw=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -419,26 +419,26 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "4s357hvovp"
+          "Value": "i6frjq0a7w"
         },
         {
           "Name": "label",
-          "Value": "assets/AboutView-CdavRcB_.js.gz"
+          "Value": "assets/AboutView-CyhPi_QM.js.gz"
         },
         {
           "Name": "integrity",
-          "Value": "sha256-lXseKIM8I9wekxiGK46yjDT3O9k3Q5bUQLzRhtSVTZs="
+          "Value": "sha256-bL2jDvZQP4uFT9Zp27IduWnj9hFaLo3OvgtsaMRUhsw="
         }
       ]
     },
     {
-      "Route": "assets/AboutView-CdavRcB_.js",
-      "AssetFile": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/jlr69mk91c-4s357hvovp.gz",
+      "Route": "assets/AboutView-CyhPi_QM.js",
+      "AssetFile": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/4a9slmly0s-i6frjq0a7w.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.001029866117"
+          "Quality": "0.001031991744"
         }
       ],
       "ResponseHeaders": [
@@ -448,15 +448,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "970"
+          "Value": "968"
         },
         {
           "Name": "ETag",
-          "Value": "\"lXseKIM8I9wekxiGK46yjDT3O9k3Q5bUQLzRhtSVTZs=\""
+          "Value": "\"bL2jDvZQP4uFT9Zp27IduWnj9hFaLo3OvgtsaMRUhsw=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -476,19 +476,19 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"ZN2HgkJYWFUedPGgQytJYO2I5N5dNKvLMI11hXxHx9A=\""
+          "Value": "W/\"mqDEMbHmSI5HyNIl2D+WduN4EBXDTzas32fGcGgzxKw=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-ZN2HgkJYWFUedPGgQytJYO2I5N5dNKvLMI11hXxHx9A="
+          "Value": "sha256-mqDEMbHmSI5HyNIl2D+WduN4EBXDTzas32fGcGgzxKw="
         }
       ]
     },
     {
-      "Route": "assets/AboutView-CdavRcB_.js",
-      "AssetFile": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/assets/AboutView-CdavRcB_.js",
+      "Route": "assets/AboutView-CyhPi_QM.js",
+      "AssetFile": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/assets/AboutView-CyhPi_QM.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -505,11 +505,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"ZN2HgkJYWFUedPGgQytJYO2I5N5dNKvLMI11hXxHx9A=\""
+          "Value": "\"mqDEMbHmSI5HyNIl2D+WduN4EBXDTzas32fGcGgzxKw=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -519,13 +519,13 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-ZN2HgkJYWFUedPGgQytJYO2I5N5dNKvLMI11hXxHx9A="
+          "Value": "sha256-mqDEMbHmSI5HyNIl2D+WduN4EBXDTzas32fGcGgzxKw="
         }
       ]
     },
     {
-      "Route": "assets/AboutView-CdavRcB_.js.gz",
-      "AssetFile": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/jlr69mk91c-4s357hvovp.gz",
+      "Route": "assets/AboutView-CyhPi_QM.js.gz",
+      "AssetFile": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/4a9slmly0s-i6frjq0a7w.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -534,7 +534,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "970"
+          "Value": "968"
         },
         {
           "Name": "Content-Type",
@@ -542,11 +542,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"lXseKIM8I9wekxiGK46yjDT3O9k3Q5bUQLzRhtSVTZs=\""
+          "Value": "\"bL2jDvZQP4uFT9Zp27IduWnj9hFaLo3OvgtsaMRUhsw=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -564,7 +564,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-lXseKIM8I9wekxiGK46yjDT3O9k3Q5bUQLzRhtSVTZs="
+          "Value": "sha256-bL2jDvZQP4uFT9Zp27IduWnj9hFaLo3OvgtsaMRUhsw="
         }
       ]
     },
@@ -593,7 +593,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -654,7 +654,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -699,7 +699,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -754,7 +754,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -807,7 +807,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -844,7 +844,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -863,6 +863,304 @@
         {
           "Name": "integrity",
           "Value": "sha256-yMDwH4ECiD7f/BcUECX6NhFkG+za6c41mnaaikRM1bo="
+        }
+      ]
+    },
+    {
+      "Route": "assets/index-6YVnfPEr.esay0id982.js",
+      "AssetFile": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/95y7knjdhn-esay0id982.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000028627866"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "34930"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"3khX1KKRNKHZ2dsrSNJJ4h3qTK1LoOsDsB7wvD91Mc8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"HgP8oj493ukhO1UIR7EM3iXVVXXLh8UDxI/HmjEBeAI=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "esay0id982"
+        },
+        {
+          "Name": "label",
+          "Value": "assets/index-6YVnfPEr.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-HgP8oj493ukhO1UIR7EM3iXVVXXLh8UDxI/HmjEBeAI="
+        }
+      ]
+    },
+    {
+      "Route": "assets/index-6YVnfPEr.esay0id982.js",
+      "AssetFile": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/assets/index-6YVnfPEr.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "86576"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"HgP8oj493ukhO1UIR7EM3iXVVXXLh8UDxI/HmjEBeAI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "esay0id982"
+        },
+        {
+          "Name": "label",
+          "Value": "assets/index-6YVnfPEr.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-HgP8oj493ukhO1UIR7EM3iXVVXXLh8UDxI/HmjEBeAI="
+        }
+      ]
+    },
+    {
+      "Route": "assets/index-6YVnfPEr.esay0id982.js.gz",
+      "AssetFile": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/95y7knjdhn-esay0id982.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "34930"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"3khX1KKRNKHZ2dsrSNJJ4h3qTK1LoOsDsB7wvD91Mc8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "esay0id982"
+        },
+        {
+          "Name": "label",
+          "Value": "assets/index-6YVnfPEr.js.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-3khX1KKRNKHZ2dsrSNJJ4h3qTK1LoOsDsB7wvD91Mc8="
+        }
+      ]
+    },
+    {
+      "Route": "assets/index-6YVnfPEr.js",
+      "AssetFile": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/95y7knjdhn-esay0id982.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000028627866"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "34930"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"3khX1KKRNKHZ2dsrSNJJ4h3qTK1LoOsDsB7wvD91Mc8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"HgP8oj493ukhO1UIR7EM3iXVVXXLh8UDxI/HmjEBeAI=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-HgP8oj493ukhO1UIR7EM3iXVVXXLh8UDxI/HmjEBeAI="
+        }
+      ]
+    },
+    {
+      "Route": "assets/index-6YVnfPEr.js",
+      "AssetFile": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/assets/index-6YVnfPEr.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "86576"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"HgP8oj493ukhO1UIR7EM3iXVVXXLh8UDxI/HmjEBeAI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-HgP8oj493ukhO1UIR7EM3iXVVXXLh8UDxI/HmjEBeAI="
+        }
+      ]
+    },
+    {
+      "Route": "assets/index-6YVnfPEr.js.gz",
+      "AssetFile": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/95y7knjdhn-esay0id982.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "34930"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"3khX1KKRNKHZ2dsrSNJJ4h3qTK1LoOsDsB7wvD91Mc8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-3khX1KKRNKHZ2dsrSNJJ4h3qTK1LoOsDsB7wvD91Mc8="
         }
       ]
     },
@@ -891,7 +1189,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -944,7 +1242,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -981,7 +1279,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1028,7 +1326,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1089,7 +1387,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1134,7 +1432,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1165,304 +1463,6 @@
       ]
     },
     {
-      "Route": "assets/index-DSN7kXGj.dz0xt2bngd.js",
-      "AssetFile": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/5r8o64z0za-dz0xt2bngd.gz",
-      "Selectors": [
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip",
-          "Quality": "0.000028621311"
-        }
-      ],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "34938"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"G+bUQwEM9eWEhJBhU1TY2shDgfvyJ7Gj13Ai4NV87c8=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        },
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip"
-        },
-        {
-          "Name": "Vary",
-          "Value": "Content-Encoding"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/javascript"
-        },
-        {
-          "Name": "ETag",
-          "Value": "W/\"x4d6X6sYMbvLGEHEur1rFcht6dBaOJavk9U0WFUNSbo=\""
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "dz0xt2bngd"
-        },
-        {
-          "Name": "label",
-          "Value": "assets/index-DSN7kXGj.js"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-x4d6X6sYMbvLGEHEur1rFcht6dBaOJavk9U0WFUNSbo="
-        }
-      ]
-    },
-    {
-      "Route": "assets/index-DSN7kXGj.dz0xt2bngd.js",
-      "AssetFile": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/assets/index-DSN7kXGj.js",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "86583"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/javascript"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"x4d6X6sYMbvLGEHEur1rFcht6dBaOJavk9U0WFUNSbo=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "dz0xt2bngd"
-        },
-        {
-          "Name": "label",
-          "Value": "assets/index-DSN7kXGj.js"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-x4d6X6sYMbvLGEHEur1rFcht6dBaOJavk9U0WFUNSbo="
-        }
-      ]
-    },
-    {
-      "Route": "assets/index-DSN7kXGj.dz0xt2bngd.js.gz",
-      "AssetFile": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/5r8o64z0za-dz0xt2bngd.gz",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "34938"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/javascript"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"G+bUQwEM9eWEhJBhU1TY2shDgfvyJ7Gj13Ai4NV87c8=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        },
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip"
-        },
-        {
-          "Name": "Vary",
-          "Value": "Content-Encoding"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "dz0xt2bngd"
-        },
-        {
-          "Name": "label",
-          "Value": "assets/index-DSN7kXGj.js.gz"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-G+bUQwEM9eWEhJBhU1TY2shDgfvyJ7Gj13Ai4NV87c8="
-        }
-      ]
-    },
-    {
-      "Route": "assets/index-DSN7kXGj.js",
-      "AssetFile": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/5r8o64z0za-dz0xt2bngd.gz",
-      "Selectors": [
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip",
-          "Quality": "0.000028621311"
-        }
-      ],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "34938"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"G+bUQwEM9eWEhJBhU1TY2shDgfvyJ7Gj13Ai4NV87c8=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        },
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip"
-        },
-        {
-          "Name": "Vary",
-          "Value": "Content-Encoding"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/javascript"
-        },
-        {
-          "Name": "ETag",
-          "Value": "W/\"x4d6X6sYMbvLGEHEur1rFcht6dBaOJavk9U0WFUNSbo=\""
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-x4d6X6sYMbvLGEHEur1rFcht6dBaOJavk9U0WFUNSbo="
-        }
-      ]
-    },
-    {
-      "Route": "assets/index-DSN7kXGj.js",
-      "AssetFile": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/assets/index-DSN7kXGj.js",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "86583"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/javascript"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"x4d6X6sYMbvLGEHEur1rFcht6dBaOJavk9U0WFUNSbo=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-x4d6X6sYMbvLGEHEur1rFcht6dBaOJavk9U0WFUNSbo="
-        }
-      ]
-    },
-    {
-      "Route": "assets/index-DSN7kXGj.js.gz",
-      "AssetFile": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/5r8o64z0za-dz0xt2bngd.gz",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "34938"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/javascript"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"G+bUQwEM9eWEhJBhU1TY2shDgfvyJ7Gj13Ai4NV87c8=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        },
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip"
-        },
-        {
-          "Name": "Vary",
-          "Value": "Content-Encoding"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-G+bUQwEM9eWEhJBhU1TY2shDgfvyJ7Gj13Ai4NV87c8="
-        }
-      ]
-    },
-    {
       "Route": "favicon.ico",
       "AssetFile": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/8i96xlqsfe-r8e75ffup4.gz",
       "Selectors": [
@@ -1487,7 +1487,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1540,7 +1540,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1577,7 +1577,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1624,7 +1624,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1685,7 +1685,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1730,7 +1730,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1761,13 +1761,13 @@
       ]
     },
     {
-      "Route": "index.e682597l39.html",
-      "AssetFile": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/9dk4siv0hv-e682597l39.gz",
+      "Route": "index.97u05g09j4.html",
+      "AssetFile": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/9dk4siv0hv-97u05g09j4.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.003448275862"
+          "Quality": "0.003472222222"
         }
       ],
       "ResponseHeaders": [
@@ -1777,15 +1777,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "289"
+          "Value": "287"
         },
         {
           "Name": "ETag",
-          "Value": "\"OVdBW4yExwcDJWg5HAqPN2iw+Hckc7LwA4EiKCeqQS0=\""
+          "Value": "\"t/eHPzSVTTr4gBn8AmyzJfN4klyXA0RLRcaJvKnL79M=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1805,13 +1805,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"5i4t/e/sO9pQf6CM0H4kEgy/5wAIQ2K48yNeE5IIpRs=\""
+          "Value": "W/\"G8IxfQV2Z+iTJ+So+fbBp9tqI7JEJQd+BpfmCSxWMWI=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "e682597l39"
+          "Value": "97u05g09j4"
         },
         {
           "Name": "label",
@@ -1819,12 +1819,12 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-5i4t/e/sO9pQf6CM0H4kEgy/5wAIQ2K48yNeE5IIpRs="
+          "Value": "sha256-G8IxfQV2Z+iTJ+So+fbBp9tqI7JEJQd+BpfmCSxWMWI="
         }
       ]
     },
     {
-      "Route": "index.e682597l39.html",
+      "Route": "index.97u05g09j4.html",
       "AssetFile": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/wwwroot/index.html",
       "Selectors": [],
       "ResponseHeaders": [
@@ -1842,11 +1842,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"5i4t/e/sO9pQf6CM0H4kEgy/5wAIQ2K48yNeE5IIpRs=\""
+          "Value": "\"G8IxfQV2Z+iTJ+So+fbBp9tqI7JEJQd+BpfmCSxWMWI=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1856,7 +1856,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "e682597l39"
+          "Value": "97u05g09j4"
         },
         {
           "Name": "label",
@@ -1864,13 +1864,13 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-5i4t/e/sO9pQf6CM0H4kEgy/5wAIQ2K48yNeE5IIpRs="
+          "Value": "sha256-G8IxfQV2Z+iTJ+So+fbBp9tqI7JEJQd+BpfmCSxWMWI="
         }
       ]
     },
     {
-      "Route": "index.e682597l39.html.gz",
-      "AssetFile": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/9dk4siv0hv-e682597l39.gz",
+      "Route": "index.97u05g09j4.html.gz",
+      "AssetFile": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/9dk4siv0hv-97u05g09j4.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1879,7 +1879,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "289"
+          "Value": "287"
         },
         {
           "Name": "Content-Type",
@@ -1887,11 +1887,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"OVdBW4yExwcDJWg5HAqPN2iw+Hckc7LwA4EiKCeqQS0=\""
+          "Value": "\"t/eHPzSVTTr4gBn8AmyzJfN4klyXA0RLRcaJvKnL79M=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1909,7 +1909,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "e682597l39"
+          "Value": "97u05g09j4"
         },
         {
           "Name": "label",
@@ -1917,18 +1917,18 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-OVdBW4yExwcDJWg5HAqPN2iw+Hckc7LwA4EiKCeqQS0="
+          "Value": "sha256-t/eHPzSVTTr4gBn8AmyzJfN4klyXA0RLRcaJvKnL79M="
         }
       ]
     },
     {
       "Route": "index.html",
-      "AssetFile": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/9dk4siv0hv-e682597l39.gz",
+      "AssetFile": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/9dk4siv0hv-97u05g09j4.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.003448275862"
+          "Quality": "0.003472222222"
         }
       ],
       "ResponseHeaders": [
@@ -1938,15 +1938,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "289"
+          "Value": "287"
         },
         {
           "Name": "ETag",
-          "Value": "\"OVdBW4yExwcDJWg5HAqPN2iw+Hckc7LwA4EiKCeqQS0=\""
+          "Value": "\"t/eHPzSVTTr4gBn8AmyzJfN4klyXA0RLRcaJvKnL79M=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1966,13 +1966,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"5i4t/e/sO9pQf6CM0H4kEgy/5wAIQ2K48yNeE5IIpRs=\""
+          "Value": "W/\"G8IxfQV2Z+iTJ+So+fbBp9tqI7JEJQd+BpfmCSxWMWI=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-5i4t/e/sO9pQf6CM0H4kEgy/5wAIQ2K48yNeE5IIpRs="
+          "Value": "sha256-G8IxfQV2Z+iTJ+So+fbBp9tqI7JEJQd+BpfmCSxWMWI="
         }
       ]
     },
@@ -1995,11 +1995,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"5i4t/e/sO9pQf6CM0H4kEgy/5wAIQ2K48yNeE5IIpRs=\""
+          "Value": "\"G8IxfQV2Z+iTJ+So+fbBp9tqI7JEJQd+BpfmCSxWMWI=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2009,13 +2009,13 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-5i4t/e/sO9pQf6CM0H4kEgy/5wAIQ2K48yNeE5IIpRs="
+          "Value": "sha256-G8IxfQV2Z+iTJ+So+fbBp9tqI7JEJQd+BpfmCSxWMWI="
         }
       ]
     },
     {
       "Route": "index.html.gz",
-      "AssetFile": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/9dk4siv0hv-e682597l39.gz",
+      "AssetFile": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/9dk4siv0hv-97u05g09j4.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2024,7 +2024,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "289"
+          "Value": "287"
         },
         {
           "Name": "Content-Type",
@@ -2032,11 +2032,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"OVdBW4yExwcDJWg5HAqPN2iw+Hckc7LwA4EiKCeqQS0=\""
+          "Value": "\"t/eHPzSVTTr4gBn8AmyzJfN4klyXA0RLRcaJvKnL79M=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Apr 2025 19:15:10 GMT"
+          "Value": "Wed, 16 Apr 2025 21:47:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2054,7 +2054,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-OVdBW4yExwcDJWg5HAqPN2iw+Hckc7LwA4EiKCeqQS0="
+          "Value": "sha256-t/eHPzSVTTr4gBn8AmyzJfN4klyXA0RLRcaJvKnL79M="
         }
       ]
     }

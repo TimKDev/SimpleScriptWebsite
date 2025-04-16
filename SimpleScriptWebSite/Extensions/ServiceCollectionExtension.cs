@@ -8,7 +8,10 @@ public static class ServiceCollectionExtension
 {
     public static IServiceCollection AddSimpleScriptWebSiteServices(this IServiceCollection services)
     {
-        return services.AddScoped<IDockerDotNetRunner, DockerDotNetRunner>()
-            .AddScoped<IWebSocketHandler, WebSocketHandler>();
+        return services.AddSingleton<IContainerOrchestrator, ContainerOrchestrator>()
+            .AddScoped<IDockerDotNetRunner, DockerDotNetRunner>()
+            .AddScoped<IWebSocketHandler, WebSocketHandler>()
+            .AddScoped<IFingerPrintService, FingerPrintService>()
+            .AddScoped<IContainerRepository, ContainerRepository>();
     }
 }

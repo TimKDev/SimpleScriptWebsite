@@ -1,101 +1,73 @@
-using Docker.DotNet;
-using Docker.DotNet.Models;
+using System.Collections.Concurrent;
 using SimpleScriptWebSite.Interfaces;
+using SimpleScriptWebSite.Models;
 
 namespace SimpleScriptWebSite.Services;
 
 internal class DockerDotNetRunner : IDockerDotNetRunner
 {
-    private readonly DockerClient _client;
     private readonly ILogger<DockerDotNetRunner> _logger;
+    private readonly IContainerRepository _containerRepository;
+    private readonly IFingerPrintService _fingerPrintService;
+    private readonly IContainerOrchestrator _containerOrchestrator;
 
-    public DockerDotNetRunner(ILogger<DockerDotNetRunner> logger)
+    public const string ExecutionCompletedMessage = "EXECUTION_COMPLETED";
+
+    public DockerDotNetRunner(ILogger<DockerDotNetRunner> logger, IContainerRepository containerRepository,
+        IContainerOrchestrator containerOrchestrator, IFingerPrintService fingerPrintService)
     {
         _logger = logger;
-        var dockerHost = Environment.GetEnvironmentVariable("DOCKER_HOST") ??
-                         throw new Exception("Docker Host not set");
-
-        _logger.LogCritical($"Docker Host: {dockerHost}");
-
-        _client = new DockerClientConfiguration(new Uri(dockerHost)).CreateClient();
+        _containerRepository = containerRepository;
+        _containerOrchestrator = containerOrchestrator;
+        _fingerPrintService = fingerPrintService;
     }
 
-    public async Task<ContainerSession> RunDotNetDllAsync(
+    public Task<ContainerSession> RunDotNetDllAsync(
         string dllFileName,
         string[]? args = null,
-        int? memoryLimit = null,
-        double? cpuLimit = null,
         CancellationToken cancellationToken = default)
     {
-        await _client.Images.CreateImageAsync(
-            new ImagesCreateParameters
-            {
-                FromImage = "mcr.microsoft.com/dotnet/runtime",
-                Tag = "9.0"
-            },
-            null,
-            new Progress<JSONMessage>(),
-            cancellationToken
-        );
+        //Shebang is used in order for the ExecutionCompleteMessage to be send after script is complete
+        var startCommand = "#!/bin/sh\n";
+        startCommand += $"dotnet /app/{dllFileName}";
 
-        var cpuShares = cpuLimit.HasValue ? (long)(cpuLimit.Value * 1024) : 0;
-        var memoryLimitBytes = memoryLimit.HasValue ? (long)memoryLimit.Value * 1024 * 1024 : 0;
-
-        var containerArgs = $"dotnet /app/{dllFileName}";
         if (args != null && args.Length > 0)
         {
-            containerArgs += " " + string.Join(" ", args);
+            startCommand += " " + string.Join(" ", args);
         }
 
-        var createResponse = await _client.Containers.CreateContainerAsync(
-            new CreateContainerParameters
-            {
-                Image = "mcr.microsoft.com/dotnet/runtime:9.0",
-                AttachStdin = true,
-                AttachStdout = true,
-                AttachStderr = true,
-                Tty = false,
-                OpenStdin = true,
-                StdinOnce = false,
-                HostConfig = new HostConfig
-                {
-                    Memory = memoryLimitBytes,
-                    CPUShares = cpuShares,
-                    Binds = new List<string>
-                    {
-                        $"/ConsoleApp:/app"
-                    }
-                },
-                Cmd = new List<string> { "/bin/bash", "-c", containerArgs }
-            },
-            cancellationToken
-        );
+        //Notify output receiver that start command is finished.
+        startCommand += $"\n echo \"{ExecutionCompletedMessage}\"";
 
-        var attachParameters = new ContainerAttachParameters
-        {
-            Stream = true,
-            Stdin = true,
-            Stdout = true,
-            Stderr = true
-        };
 
-        var stream = await _client.Containers.AttachContainerAsync(
-            createResponse.ID,
-            false,
-            attachParameters,
-            cancellationToken
-        );
+        var userFingerPrint = _fingerPrintService.GetUserIdentifier() ?? Guid.NewGuid().ToString();
 
-        await _client.Containers.StartContainerAsync(
-            createResponse.ID,
-            new ContainerStartParameters(),
-            cancellationToken
-        );
+        //Überprüfe, ob der aktuelle User noch mehr Container anlegen darf, falls nicht verlasse hier diese Funktion und
+        //beende den WebSocket sauber.
 
-        return new ContainerSession(
-            containerId: createResponse.ID,
-            client: _client,
-            stream: stream
-        );
+        return _containerRepository.CreateAndStartContainerAsync("mcr.microsoft.com/dotnet/runtime:9.0",
+            startCommand, ["/ConsoleApp:/app"], 256, 0.5, cancellationToken);
     }
+}
+
+public class ContainerOrchestrator : IContainerOrchestrator
+{
+    private readonly ConcurrentDictionary<string, ContainerInformation> _allocatedResources = new();
+
+    public async Task<bool> IsUserAllowedToStartContainer(string userIdentifier)
+    {
+        //Check total Number is not exceeded 
+        //Check if total Number of User is not exceeded
+        return true;
+    }
+}
+
+public interface IContainerOrchestrator
+{
+}
+
+public class ContainerInformation
+{
+    public ContainerSession Session { get; set; }
+    public DateTime StartedAt { get; set; }
 }

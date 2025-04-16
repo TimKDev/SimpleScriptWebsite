@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net.WebSockets;
 using System.Text;
 using SimpleScriptWebSite.Interfaces;
+using SimpleScriptWebSite.Services;
 
 namespace SimpleScriptWebSite.Controllers;
 
@@ -10,10 +11,12 @@ namespace SimpleScriptWebSite.Controllers;
 public class ConsoleAppController : ControllerBase
 {
     private readonly IWebSocketHandler _webSocketHandler;
+    private readonly IFingerPrintService _fingerPrintService;
 
-    public ConsoleAppController(IWebSocketHandler webSocketHandler)
+    public ConsoleAppController(IWebSocketHandler webSocketHandler, IFingerPrintService fingerPrintService)
     {
         _webSocketHandler = webSocketHandler;
+        _fingerPrintService = fingerPrintService;
     }
 
     [HttpGet("/ws")]
@@ -22,21 +25,7 @@ public class ConsoleAppController : ControllerBase
         if (HttpContext.WebSockets.IsWebSocketRequest)
         {
             using var webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
-            try
-            {
-                await _webSocketHandler.HandleWebSocketConnectionAsync(webSocket, cancellationToken);
-            }
-            finally
-            {
-                //TODO Ist dies notwendig, wenn der Socket disposed wird?
-                if (webSocket.State != WebSocketState.Closed)
-                {
-                    await webSocket.CloseAsync(
-                        WebSocketCloseStatus.NormalClosure,
-                        null,
-                        CancellationToken.None);
-                }
-            }
+            await _webSocketHandler.HandleWebSocketConnectionAsync(webSocket, cancellationToken);
         }
         else
         {

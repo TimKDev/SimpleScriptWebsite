@@ -4,6 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddSimpleScriptWebSiteServices();
+builder.Services.AddHttpContextAccessor();
 
 if (builder.Environment.IsDevelopment())
 {

@@ -11,7 +11,7 @@ function stop() {
 function sendInput() {
   let nameInput = document.getElementById("name") as HTMLInputElement;
   console.log("Send name");
-  socket.send(`input:${nameInput.value}`);
+  socket.send(`nameInput.value`);
 }
 
 function start() {

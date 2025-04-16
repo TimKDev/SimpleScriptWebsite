@@ -1,6 +1,7 @@
 using System.Net.WebSockets;
-using System.Text;
+using SimpleScriptWebSite.Extensions;
 using SimpleScriptWebSite.Interfaces;
+using SimpleScriptWebSite.Models;
 
 namespace SimpleScriptWebSite.Services;
 
@@ -15,85 +16,61 @@ internal class WebSocketHandler : IWebSocketHandler
 
     public async Task HandleWebSocketConnectionAsync(WebSocket webSocket, CancellationToken cancellationToken)
     {
-        var buffer = new byte[1024 * 4];
-        var receiveResult = await webSocket.ReceiveAsync(
-            new ArraySegment<byte>(buffer), cancellationToken);
+        var startCommand = await webSocket.WaitForMessageAsync(cancellationToken);
 
-        if (receiveResult.MessageType != WebSocketMessageType.Text)
-        {
-            throw new InvalidOperationException("Unexpected message type");
-        }
+        using var executionCompletedCts = new CancellationTokenSource();
+        using var linkedCts =
+            CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, executionCompletedCts.Token);
 
-        var receivedMessage = Encoding.UTF8.GetString(buffer, 0, receiveResult.Count);
-        using var dockerSession = await StartDockerSessionAsync(webSocket, receivedMessage);
+        using var dockerSession =
+            await StartDockerSessionAsync(webSocket, "HelloWorld2.dll", [startCommand], executionCompletedCts);
 
-        var timeoutTask = Task.Delay(TimeSpan.FromSeconds(30), cancellationToken);
-        var processExited = false; //TODO Finde heraus das der Prozess im Docker korrekt beendet wurde
+        await PassInputsOnToContainer(webSocket, dockerSession, linkedCts.Token);
+    }
 
-        while (!processExited && !timeoutTask.IsCompleted && webSocket.State == WebSocketState.Open)
+    private static async Task PassInputsOnToContainer(WebSocket webSocket, ContainerSession dockerSession,
+        CancellationToken cancellationToken)
+    {
+        while (webSocket.State == WebSocketState.Open)
         {
             try
             {
-                receiveResult = await webSocket.ReceiveAsync(
-                    new ArraySegment<byte>(buffer), cancellationToken);
-
-                // Check if client initiated close
-                if (receiveResult.MessageType == WebSocketMessageType.Close)
-                {
-                    // Acknowledge the close request
-                    await webSocket.CloseAsync(
-                        WebSocketCloseStatus.NormalClosure,
-                        "Closing as requested by client",
-                        cancellationToken);
-                    break;
-                }
-
-                var message = Encoding.UTF8.GetString(buffer, 0, receiveResult.Count);
-
-                if (message.StartsWith("input"))
-                {
-                    //websocket input form: "input:{value}"
-                    var inputValue = message.Split(":")[1];
-                    await dockerSession.SendInputAsync(inputValue, cancellationToken);
-                }
+                var message = await webSocket.WaitForMessageAsync(cancellationToken);
+                await dockerSession.SendInputAsync(message, cancellationToken);
             }
-            catch (Exception e)
+            catch (OperationCanceledException)
             {
-                Console.WriteLine(e);
+                return;
             }
         }
     }
 
-    private async Task SendMessageAsync(WebSocket webSocket, string message)
-    {
-        if (webSocket.State == WebSocketState.Closed)
-        {
-            return;
-        }
-
-        var bytes = Encoding.UTF8.GetBytes(message);
-        var arraySegment = new ArraySegment<byte>(bytes);
-        await webSocket.SendAsync(arraySegment, WebSocketMessageType.Text, true, CancellationToken.None);
-    }
-
-    private async Task<ContainerSession> StartDockerSessionAsync(WebSocket webSocket, string command)
+    private async Task<ContainerSession> StartDockerSessionAsync(WebSocket webSocket, string consoleFileName,
+        string[] args,
+        CancellationTokenSource executionCompletedCts)
     {
         var dockerSession =
-            await _dockerDotNetRunner.RunDotNetDllAsync("HelloWorld2.dll", null, 256, 0.5);
+            await _dockerDotNetRunner.RunDotNetDllAsync(consoleFileName, args);
 
-        dockerSession.OutputReceived += async (_, e) =>
+        dockerSession.OutputReceived += async (_, output) =>
         {
-            if (!string.IsNullOrEmpty(e))
+            if (!string.IsNullOrEmpty(output))
             {
-                await SendMessageAsync(webSocket, $"output:{e}");
+                if (output == DockerDotNetRunner.ExecutionCompletedMessage + "\n")
+                {
+                    await executionCompletedCts.CancelAsync();
+                    return;
+                }
+
+                await webSocket.SendMessageAsync($"output:{output}");
             }
         };
 
-        dockerSession.ErrorReceived += async (_, e) =>
+        dockerSession.ErrorReceived += async (_, error) =>
         {
-            if (!string.IsNullOrEmpty(e))
+            if (!string.IsNullOrEmpty(error))
             {
-                await SendMessageAsync(webSocket, $"error:{e}");
+                await webSocket.SendMessageAsync($"error:{error}");
             }
         };
 

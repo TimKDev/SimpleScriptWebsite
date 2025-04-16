@@ -1,12 +1,12 @@
 using System.Text;
 using Docker.DotNet;
-using Docker.DotNet.Models;
+using SimpleScriptWebSite.Interfaces;
 
-namespace SimpleScriptWebSite.Services;
+namespace SimpleScriptWebSite.Models;
 
 public class ContainerSession : IDisposable
 {
-    private readonly DockerClient _client;
+    private readonly IContainerRepository _containerRepository;
     private readonly MultiplexedStream _stream;
     private readonly CancellationTokenSource _cts;
     private readonly byte[] _buffer = new byte[81920];
@@ -15,11 +15,11 @@ public class ContainerSession : IDisposable
     public event EventHandler<string>? OutputReceived;
     public event EventHandler<string>? ErrorReceived;
 
-    public ContainerSession(string containerId, DockerClient client, MultiplexedStream stream)
+    public ContainerSession(string containerId, MultiplexedStream stream, IContainerRepository containerRepository)
     {
         _containerId = containerId;
-        _client = client;
         _stream = stream;
+        _containerRepository = containerRepository;
         _cts = new CancellationTokenSource();
         Task.Run(() => ReadOutputAsync(_cts.Token));
     }
@@ -50,22 +50,10 @@ public class ContainerSession : IDisposable
 
     private async Task StopContainerAsync()
     {
-        await _client.Containers.StopContainerAsync(
-            _containerId,
-            new ContainerStopParameters
-            {
-                WaitBeforeKillSeconds = 10
-            }
-        );
-
-        await _client.Containers.RemoveContainerAsync(
-            _containerId,
-            new ContainerRemoveParameters
-            {
-                Force = true
-            }
-        );
+        await _containerRepository.StopContainerAsync(_containerId);
+        await _containerRepository.RemoveContainerAsync(_containerId);
     }
+
 
     private async Task ReadOutputAsync(CancellationToken cancellationToken)
     {
