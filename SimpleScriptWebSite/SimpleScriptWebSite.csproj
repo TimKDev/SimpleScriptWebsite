@@ -8,21 +8,18 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Content Include="..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
-      <Content Remove="ConsoleApp\HelloWorld.deps.json" />
-      <Content Remove="ConsoleApp\HelloWorld.runtimeconfig.json" />
-      <Content Include="ConsoleApp\**" CopyToOutputDirectory="PreserveNewest" />
+        <Content Include="..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Docker.DotNet" Version="3.125.15" />
+        <PackageReference Include="Docker.DotNet" Version="3.125.15"/>
     </ItemGroup>
 
     <Target Name="BuildVue" BeforeTargets="Build">
-        <Exec Command="npm install" WorkingDirectory="Frontend" />
-        <Exec Command="npm run build-only" WorkingDirectory="Frontend" />
+        <Exec Command="npm install" WorkingDirectory="Frontend"/>
+        <Exec Command="npm run build-only" WorkingDirectory="Frontend"/>
     </Target>
 
 </Project>

@@ -89,6 +89,10 @@ public class ContainerSession : IDisposable
                 }
             }
         }
+        catch (OperationCanceledException _)
+        {
+            //Log Normal Shutdown
+        }
         catch (Exception ex)
         {
             ErrorReceived?.Invoke(this, $"Stream reading error: {ex.Message}");

@@ -28,6 +28,7 @@ public class ConsoleAppController : ControllerBase
             }
             finally
             {
+                //TODO Ist dies notwendig, wenn der Socket disposed wird?
                 if (webSocket.State != WebSocketState.Closed)
                 {
                     await webSocket.CloseAsync(

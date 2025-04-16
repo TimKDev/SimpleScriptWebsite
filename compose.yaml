@@ -7,13 +7,14 @@
     ports:
       - "10000:8080"
     environment:
-      - DOCKER_HOST=tcp://docker:2375
+      DOCKER_HOST: "tcp://docker:2375"
       #- DOCKER_HOST=https://docker:2376
       #- DOCKER_TLS_VERIFY=1
       #- DOCKER_CERT_PATH=/certs/client
     depends_on:
       - docker
     #volumes:
+      #- /home/tim/Source/projects/SimpleScriptWebSite/ConsoleApp:/ConsoleApp
     #  - docker-certs:/certs/client:ro
 
   docker:
@@ -28,6 +29,7 @@
       #- "2376:2376"
     volumes:
       - docker-data:/var/lib/docker
+      # TODO Hier sollte ein Host unabhängiger Pfad stehen!
       - /home/tim/Source/projects/SimpleScriptWebSite/ConsoleApp:/ConsoleApp
       #- docker-certs:/certs/client
 

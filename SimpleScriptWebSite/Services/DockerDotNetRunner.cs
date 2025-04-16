@@ -7,30 +7,26 @@ namespace SimpleScriptWebSite.Services;
 internal class DockerDotNetRunner : IDockerDotNetRunner
 {
     private readonly DockerClient _client;
+    private readonly ILogger<DockerDotNetRunner> _logger;
 
-    public DockerDotNetRunner()
+    public DockerDotNetRunner(ILogger<DockerDotNetRunner> logger)
     {
-        // Get the DOCKER_HOST environment variable (provided by compose file)
+        _logger = logger;
         var dockerHost = Environment.GetEnvironmentVariable("DOCKER_HOST") ??
                          throw new Exception("Docker Host not set");
+
+        _logger.LogCritical($"Docker Host: {dockerHost}");
 
         _client = new DockerClientConfiguration(new Uri(dockerHost)).CreateClient();
     }
 
     public async Task<ContainerSession> RunDotNetDllAsync(
-        string dllPath,
+        string dllFileName,
         string[]? args = null,
         int? memoryLimit = null,
         double? cpuLimit = null,
         CancellationToken cancellationToken = default)
     {
-        if (!File.Exists(dllPath))
-        {
-            throw new FileNotFoundException($"Could not find the DLL at path: {dllPath}");
-        }
-
-        var dllFileName = Path.GetFileName(dllPath);
-
         await _client.Images.CreateImageAsync(
             new ImagesCreateParameters
             {

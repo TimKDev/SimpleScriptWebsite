@@ -13,3 +13,9 @@
 /home/tim/Source/projects/SimpleScriptWebSite/app/HelloWorld/HelloWorld.pdb
 /home/tim/Source/projects/SimpleScriptWebSite/HelloWorld/obj/Release/net9.0/HelloWorld.genruntimeconfig.cache
 /home/tim/Source/projects/SimpleScriptWebSite/HelloWorld/obj/Release/net9.0/ref/HelloWorld.dll
+/home/tim/Source/projects/SimpleScriptWebSite/HelloWorld/bin/Release/net9.0/HelloWorld
+/home/tim/Source/projects/SimpleScriptWebSite/HelloWorld/bin/Release/net9.0/HelloWorld.deps.json
+/home/tim/Source/projects/SimpleScriptWebSite/HelloWorld/bin/Release/net9.0/HelloWorld.runtimeconfig.json
+/home/tim/Source/projects/SimpleScriptWebSite/HelloWorld/bin/Release/net9.0/HelloWorld.dll
+/home/tim/Source/projects/SimpleScriptWebSite/HelloWorld/bin/Release/net9.0/HelloWorld.pdb
+/home/tim/Source/projects/SimpleScriptWebSite/HelloWorld/obj/Release/net9.0/HelloWorld.sourcelink.json

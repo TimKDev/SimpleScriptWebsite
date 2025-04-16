@@ -79,7 +79,7 @@ internal class WebSocketHandler : IWebSocketHandler
     private async Task<ContainerSession> StartDockerSessionAsync(WebSocket webSocket, string command)
     {
         var dockerSession =
-            await _dockerDotNetRunner.RunDotNetDllAsync("ConsoleApp/HelloWorld.dll", null, 256, 0.5);
+            await _dockerDotNetRunner.RunDotNetDllAsync("HelloWorld2.dll", null, 256, 0.5);
 
         dockerSession.OutputReceived += async (_, e) =>
         {
