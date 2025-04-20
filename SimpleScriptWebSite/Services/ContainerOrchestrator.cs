@@ -1,9 +1,10 @@
 using System.Collections.Concurrent;
+using SimpleScriptWebSite.Interfaces;
 using SimpleScriptWebSite.Models;
 
 namespace SimpleScriptWebSite.Services;
 
-public class ContainerOrchestrator : IContainerOrchestrator
+public class WebSocketResourceManager : IWebSocketResourceManager
 {
     private readonly ConcurrentDictionary<string, ContainerInformation> _allocatedResources = new();
     private const int MaxTotalNumber = 10;
@@ -19,7 +20,7 @@ public class ContainerOrchestrator : IContainerOrchestrator
 
         if (_allocatedResources.ContainsKey(userIdentifier))
         {
-            return RemoveContainer(userIdentifier);
+            return RemoveResourcesForUser(userIdentifier);
         }
 
         return true;
@@ -47,12 +48,12 @@ public class ContainerOrchestrator : IContainerOrchestrator
 
         foreach (var key in keysForCleanup)
         {
-            RemoveContainer(key);
+            RemoveResourcesForUser(key);
         }
     }
 
 
-    private bool RemoveContainer(string userIdentifier)
+    private bool RemoveResourcesForUser(string userIdentifier)
     {
         if (_allocatedResources.TryRemove(userIdentifier, out var removedContainer))
         {

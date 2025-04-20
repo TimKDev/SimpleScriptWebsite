@@ -11,9 +11,11 @@ public class ContainerSession : IDisposable
     private readonly CancellationTokenSource _cts;
     private readonly byte[] _buffer = new byte[81920];
     private readonly string _containerId;
+    private bool _disposed;
 
     public event EventHandler<string>? OutputReceived;
     public event EventHandler<string>? ErrorReceived;
+
 
     public ContainerSession(string containerId, MultiplexedStream stream, IContainerRepository containerRepository)
     {
@@ -42,6 +44,12 @@ public class ContainerSession : IDisposable
 
     public void Dispose()
     {
+        if (_disposed)
+        {
+            return;
+        }
+
+        _disposed = true;
         _cts.Cancel();
         _cts.Dispose();
         _stream.Dispose();

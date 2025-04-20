@@ -1,4 +1,4 @@
-namespace SimpleScriptWebSite.Services;
+namespace SimpleScriptWebSite.Interfaces;
 
 public interface IFingerPrintService
 {

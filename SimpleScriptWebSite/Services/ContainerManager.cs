@@ -1,17 +1,20 @@
+using System.Net.WebSockets;
 using SimpleScriptWebSite.Interfaces;
+using SimpleScriptWebSite.Models;
 
 namespace SimpleScriptWebSite.Services;
 
 public class ContainerManager : IContainerManager
 {
-    private readonly IContainerOrchestrator _containerOrchestrator;
+    private readonly IWebSocketResourceManager _webSocketResourceManager;
     private readonly IContainerRepository _containerRepository;
     private readonly IFingerPrintService _fingerPrintService;
 
-    public ContainerManager(IContainerOrchestrator containerOrchestrator, IContainerRepository containerRepository,
+    public ContainerManager(IWebSocketResourceManager webSocketResourceManager,
+        IContainerRepository containerRepository,
         IFingerPrintService fingerPrintService)
     {
-        _containerOrchestrator = containerOrchestrator;
+        _webSocketResourceManager = webSocketResourceManager;
         _containerRepository = containerRepository;
         _fingerPrintService = fingerPrintService;
     }
@@ -25,7 +28,7 @@ public class ContainerManager : IContainerManager
             return ContainerCreationResult.Create(ContainerCreationStatus.MissingFingerPrintForUser);
         }
 
-        if (!_containerOrchestrator.IsUserAllowedToStartContainer(userIdentifier))
+        if (!_webSocketResourceManager.IsUserAllowedToStartContainer(userIdentifier))
         {
             return ContainerCreationResult.Create(ContainerCreationStatus.ContainerLimitExceeded);
         }
@@ -34,7 +37,7 @@ public class ContainerManager : IContainerManager
             "mcr.microsoft.com/dotnet/runtime:9.0",
             startCommand, ["/ConsoleApp:/app"], 256, 0.5, cancellationToken);
 
-        if (!_containerOrchestrator.TryAddContainer(userIdentifier, createdContainer))
+        if (!_webSocketResourceManager.TryAddContainer(userIdentifier, createdContainer))
         {
             return ContainerCreationResult.Create(ContainerCreationStatus.ContainerLimitExceeded);
         }

@@ -1,8 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Net.WebSockets;
-using System.Text;
 using SimpleScriptWebSite.Interfaces;
-using SimpleScriptWebSite.Services;
 
 namespace SimpleScriptWebSite.Controllers;
 
@@ -11,12 +8,10 @@ namespace SimpleScriptWebSite.Controllers;
 public class ConsoleAppController : ControllerBase
 {
     private readonly IWebSocketHandler _webSocketHandler;
-    private readonly IFingerPrintService _fingerPrintService;
 
-    public ConsoleAppController(IWebSocketHandler webSocketHandler, IFingerPrintService fingerPrintService)
+    public ConsoleAppController(IWebSocketHandler webSocketHandler)
     {
         _webSocketHandler = webSocketHandler;
-        _fingerPrintService = fingerPrintService;
     }
 
     [HttpGet("/ws")]

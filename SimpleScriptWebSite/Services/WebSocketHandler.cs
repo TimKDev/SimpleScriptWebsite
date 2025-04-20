@@ -17,6 +17,10 @@ internal class WebSocketHandler : IWebSocketHandler
     public async Task HandleWebSocketConnectionAsync(WebSocket webSocket, CancellationToken cancellationToken)
     {
         var startCommand = await webSocket.WaitForMessageAsync(cancellationToken);
+        if (webSocket.State == WebSocketState.Closed)
+        {
+            return;
+        }
 
         using var executionCompletedCts = new CancellationTokenSource();
         using var linkedCts =
@@ -27,7 +31,8 @@ internal class WebSocketHandler : IWebSocketHandler
 
         if (creationResult.Status != ContainerCreationStatus.Success)
         {
-            //TODO Wie sendet man BadRequest über einen Websocket?
+            await webSocket.CloseAsync(WebSocketCloseStatus.PolicyViolation, "Container creation is not allowed.",
+                cancellationToken);
             return;
         }
 
@@ -45,6 +50,10 @@ internal class WebSocketHandler : IWebSocketHandler
             {
                 var message = await webSocket.WaitForMessageAsync(cancellationToken);
                 await dockerSession.SendInputAsync(message, cancellationToken);
+            }
+            catch (ObjectDisposedException)
+            {
+                return;
             }
             catch (OperationCanceledException)
             {

@@ -1,10 +1,12 @@
 using SimpleScriptWebSite.Extensions;
+using SimpleScriptWebSite.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddSimpleScriptWebSiteServices();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddHostedService<ContainerWatcher>();
 
 if (builder.Environment.IsDevelopment())
 {
@@ -30,10 +32,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseAuthorization();
-
 app.UseWebSockets(new WebSocketOptions
 {
-    KeepAliveInterval = TimeSpan.FromMinutes(2)
+    KeepAliveInterval = TimeSpan.FromSeconds(30),
 });
 app.MapControllers();
 app.UseDefaultFiles();

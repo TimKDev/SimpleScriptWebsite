@@ -28,12 +28,23 @@ internal static class WebSocketExtensions
             throw new InvalidOperationException("Unexpected message type");
         }
 
+        if (receiveResult.Count > 1024 * 4)
+        {
+            const string closingMessage = "Message Size is too large";
+            await webSocket.CloseAsync(
+                WebSocketCloseStatus.MessageTooBig,
+                closingMessage,
+                cancellationToken);
+
+            return closingMessage;
+        }
+
         return Encoding.UTF8.GetString(buffer, 0, receiveResult.Count);
     }
 
     public static async Task SendMessageAsync(this WebSocket webSocket, string message)
     {
-        if (webSocket.State == WebSocketState.Closed)
+        if (webSocket.State != WebSocketState.Open)
         {
             return;
         }

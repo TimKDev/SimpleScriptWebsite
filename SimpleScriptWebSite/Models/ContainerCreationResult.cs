@@ -1,6 +1,4 @@
-using SimpleScriptWebSite.Models;
-
-namespace SimpleScriptWebSite.Services;
+namespace SimpleScriptWebSite.Models;
 
 public class ContainerCreationResult
 {
