@@ -5,7 +5,7 @@ namespace SimpleScriptWebSite.Interfaces;
 
 public interface IDockerDotNetRunner
 {
-    Task<ContainerSession> RunDotNetDllAsync(string dllPath,
+    Task<ContainerCreationResult> RunDotNetDllAsync(string dllPath,
         string[]? args = null,
         CancellationToken cancellationToken = default);
 }

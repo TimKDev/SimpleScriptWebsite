@@ -11,6 +11,7 @@ public static class ServiceCollectionExtension
         return services.AddSingleton<IContainerOrchestrator, ContainerOrchestrator>()
             .AddScoped<IDockerDotNetRunner, DockerDotNetRunner>()
             .AddScoped<IWebSocketHandler, WebSocketHandler>()
+            .AddScoped<IContainerManager, ContainerManager>()
             .AddScoped<IFingerPrintService, FingerPrintService>()
             .AddScoped<IContainerRepository, ContainerRepository>();
     }

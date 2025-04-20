@@ -1,6 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-for (int i = 0; i < 3; i++)
+﻿for (int i = 0; i < 3; i++)
 {
     Console.WriteLine("Please enter your name:");
     var name = Console.ReadLine();

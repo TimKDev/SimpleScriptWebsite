@@ -22,8 +22,16 @@ internal class WebSocketHandler : IWebSocketHandler
         using var linkedCts =
             CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, executionCompletedCts.Token);
 
-        using var dockerSession =
+        var creationResult =
             await StartDockerSessionAsync(webSocket, "HelloWorld2.dll", [startCommand], executionCompletedCts);
+
+        if (creationResult.Status != ContainerCreationStatus.Success)
+        {
+            //TODO Wie sendet man BadRequest über einen Websocket?
+            return;
+        }
+
+        using var dockerSession = creationResult.Session!;
 
         await PassInputsOnToContainer(webSocket, dockerSession, linkedCts.Token);
     }
@@ -45,14 +53,20 @@ internal class WebSocketHandler : IWebSocketHandler
         }
     }
 
-    private async Task<ContainerSession> StartDockerSessionAsync(WebSocket webSocket, string consoleFileName,
+    private async Task<ContainerCreationResult> StartDockerSessionAsync(WebSocket webSocket, string consoleFileName,
         string[] args,
         CancellationTokenSource executionCompletedCts)
     {
-        var dockerSession =
-            await _dockerDotNetRunner.RunDotNetDllAsync(consoleFileName, args);
+        var containerCreationResult = await _dockerDotNetRunner.RunDotNetDllAsync(consoleFileName, args);
 
-        dockerSession.OutputReceived += async (_, output) =>
+        if (containerCreationResult.Status != ContainerCreationStatus.Success)
+        {
+            return containerCreationResult;
+        }
+
+        var containerSession = containerCreationResult.Session!;
+
+        containerSession.OutputReceived += async (_, output) =>
         {
             if (!string.IsNullOrEmpty(output))
             {
@@ -66,7 +80,7 @@ internal class WebSocketHandler : IWebSocketHandler
             }
         };
 
-        dockerSession.ErrorReceived += async (_, error) =>
+        containerSession.ErrorReceived += async (_, error) =>
         {
             if (!string.IsNullOrEmpty(error))
             {
@@ -74,6 +88,6 @@ internal class WebSocketHandler : IWebSocketHandler
             }
         };
 
-        return dockerSession;
+        return containerCreationResult;
     }
 }
