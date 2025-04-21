@@ -2,11 +2,13 @@ using SimpleScriptWebSite.Models;
 
 namespace SimpleScriptWebSite.Interfaces;
 
-public interface IWebSocketResourceManager
+public interface IContainerOrchestrator
 {
-    bool IsUserAllowedToStartContainer(string userIdentifier);
+    Task<bool> IsUserAllowedToStartContainerAsync(string userIdentifier);
 
     bool TryAddContainer(string userIdentifier, ContainerSession containerSession);
 
-    void CleanupContainers();
+    Task CleanupContainersAsync();
+
+    Task<bool> RemoveResourcesForUserAsync(string userIdentifier);
 }

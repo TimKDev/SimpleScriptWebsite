@@ -1,4 +1,5 @@
 using System.Net.WebSockets;
+using Microsoft.Extensions.Options;
 using SimpleScriptWebSite.Extensions;
 using SimpleScriptWebSite.Interfaces;
 using SimpleScriptWebSite.Models;
@@ -7,41 +8,83 @@ namespace SimpleScriptWebSite.Services;
 
 internal class WebSocketHandler : IWebSocketHandler
 {
-    private readonly IDockerDotNetRunner _dockerDotNetRunner;
+    private readonly IInputValidator _inputValidator;
+    private readonly IContainerManager _containerManager;
+    private readonly SandboxerConfig _sandboxerConfig;
+    private readonly IFingerPrintService _fingerPrintService;
+    private readonly IContainerOrchestrator _containerOrchestrator;
 
-    public WebSocketHandler(IDockerDotNetRunner dockerDotNetRunner)
+    public WebSocketHandler(IInputValidator inputValidator, IContainerManager containerManager,
+        IOptions<SandboxerConfig> sandboxerConfig, IFingerPrintService fingerPrintService,
+        IContainerOrchestrator containerOrchestrator)
     {
-        _dockerDotNetRunner = dockerDotNetRunner;
+        _inputValidator = inputValidator;
+        _containerManager = containerManager;
+        _fingerPrintService = fingerPrintService;
+        _containerOrchestrator = containerOrchestrator;
+        _sandboxerConfig = sandboxerConfig.Value;
     }
 
     public async Task HandleWebSocketConnectionAsync(WebSocket webSocket, CancellationToken cancellationToken)
     {
-        var startCommand = await webSocket.WaitForMessageAsync(cancellationToken);
-        if (webSocket.State == WebSocketState.Closed)
+        // Create a timeout token source
+        using var timeoutCts =
+            new CancellationTokenSource(TimeSpan.FromSeconds(_sandboxerConfig.AllowedMaxLifeTimeContainerInSeconds));
+        using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, timeoutCts.Token);
+        ContainerCreationResult? creationResult = null;
+
+        try
         {
-            return;
+            var startCommand = await webSocket.WaitForMessageAsync(linkedCts.Token);
+            if (webSocket.State == WebSocketState.Closed)
+            {
+                return;
+            }
+
+            if (!_inputValidator.ValidateStartCommand(startCommand))
+            {
+                await webSocket.CloseAsync(WebSocketCloseStatus.PolicyViolation, "Start Command is invalid",
+                    cancellationToken);
+                return;
+            }
+
+            using var executionCompletedCts = new CancellationTokenSource();
+            using var linkedCtsExecution =
+                CancellationTokenSource.CreateLinkedTokenSource(executionCompletedCts.Token, linkedCts.Token);
+
+            creationResult =
+                await StartDockerSessionAsync(webSocket, _sandboxerConfig.DllFileName, [startCommand],
+                    executionCompletedCts);
+
+            if (creationResult.Status != ContainerCreationStatus.Success)
+            {
+                await webSocket.CloseAsync(WebSocketCloseStatus.PolicyViolation, "Container creation is not allowed.",
+                    cancellationToken);
+                return;
+            }
+
+            await PassInputsOnToContainer(webSocket, creationResult.Session!, linkedCtsExecution.Token);
         }
-
-        using var executionCompletedCts = new CancellationTokenSource();
-        using var linkedCts =
-            CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, executionCompletedCts.Token);
-
-        var creationResult =
-            await StartDockerSessionAsync(webSocket, "HelloWorld2.dll", [startCommand], executionCompletedCts);
-
-        if (creationResult.Status != ContainerCreationStatus.Success)
+        catch (OperationCanceledException)
         {
-            await webSocket.CloseAsync(WebSocketCloseStatus.PolicyViolation, "Container creation is not allowed.",
-                cancellationToken);
-            return;
+            if (timeoutCts.IsCancellationRequested && webSocket.State == WebSocketState.Open)
+            {
+                await webSocket.CloseAsync(
+                    WebSocketCloseStatus.NormalClosure,
+                    "Connection timeout after 30 seconds",
+                    CancellationToken.None);
+            }
         }
-
-        using var dockerSession = creationResult.Session!;
-
-        await PassInputsOnToContainer(webSocket, dockerSession, linkedCts.Token);
+        finally
+        {
+            if (creationResult?.UserIdentifier != null)
+            {
+                await _containerOrchestrator.RemoveResourcesForUserAsync(creationResult.UserIdentifier);
+            }
+        }
     }
 
-    private static async Task PassInputsOnToContainer(WebSocket webSocket, ContainerSession dockerSession,
+    private async Task PassInputsOnToContainer(WebSocket webSocket, ContainerSession dockerSession,
         CancellationToken cancellationToken)
     {
         while (webSocket.State == WebSocketState.Open)
@@ -49,6 +92,17 @@ internal class WebSocketHandler : IWebSocketHandler
             try
             {
                 var message = await webSocket.WaitForMessageAsync(cancellationToken);
+                if (webSocket.State == WebSocketState.Closed)
+                {
+                    return;
+                }
+
+                if (!_inputValidator.ValidateInput(message))
+                {
+                    await webSocket.SendMessageAsync("Invalid input.");
+                    continue;
+                }
+
                 await dockerSession.SendInputAsync(message, cancellationToken);
             }
             catch (ObjectDisposedException)
@@ -66,7 +120,9 @@ internal class WebSocketHandler : IWebSocketHandler
         string[] args,
         CancellationTokenSource executionCompletedCts)
     {
-        var containerCreationResult = await _dockerDotNetRunner.RunDotNetDllAsync(consoleFileName, args);
+        var containerCreationResult =
+            await _containerManager.StartDotNetRuntimeContainerAsync(consoleFileName, executionCompletedCts.Token,
+                args);
 
         if (containerCreationResult.Status != ContainerCreationStatus.Success)
         {
@@ -79,7 +135,7 @@ internal class WebSocketHandler : IWebSocketHandler
         {
             if (!string.IsNullOrEmpty(output))
             {
-                if (output == DockerDotNetRunner.ExecutionCompletedMessage + "\n")
+                if (output == ContainerManager.ExecutionCompletedMessage + "\n")
                 {
                     await executionCompletedCts.CancelAsync();
                     return;

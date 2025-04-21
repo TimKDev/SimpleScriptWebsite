@@ -41,6 +41,6 @@
 /home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/bin/Debug/net9.0/Newtonsoft.Json.dll
 /home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/SimpleScriptWebSite.csproj.AssemblyReference.cache
 /home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/SimpleSc.6874BFF2.Up2Date
-/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/re7e6w6rc4-anhqqduc7a.gz
-/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/br9cmcm61c-8ahpa5bdrf.gz
-/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/9dk4siv0hv-yv0g0jaigz.gz
+/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/31yttbb58v-itywpav07k.gz
+/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/0w18hnybtw-z58ftwv46h.gz
+/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/9dk4siv0hv-o1383uxprk.gz

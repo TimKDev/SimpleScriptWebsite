@@ -1,26 +1,31 @@
 using System.Collections.Concurrent;
+using Microsoft.Extensions.Options;
 using SimpleScriptWebSite.Interfaces;
 using SimpleScriptWebSite.Models;
 
 namespace SimpleScriptWebSite.Services;
 
-public class WebSocketResourceManager : IWebSocketResourceManager
+public class ContainerOrchestrator : IContainerOrchestrator
 {
     private readonly ConcurrentDictionary<string, ContainerInformation> _allocatedResources = new();
-    private const int MaxTotalNumber = 10;
-    private const int AllowedMaxLifeTimeInSeconds = 30;
+    private readonly SandboxerConfig _sandboxerConfig;
 
-    public bool IsUserAllowedToStartContainer(string userIdentifier)
+    public ContainerOrchestrator(IOptions<SandboxerConfig> sandboxerConfig)
     {
-        if (_allocatedResources.Keys.Count > MaxTotalNumber)
+        _sandboxerConfig = sandboxerConfig.Value;
+    }
+
+    public async Task<bool> IsUserAllowedToStartContainerAsync(string userIdentifier)
+    {
+        if (_allocatedResources.Keys.Count > _sandboxerConfig.MaxTotalNumberContainers)
         {
-            CleanupContainers();
+            await CleanupContainersAsync();
             return false;
         }
 
         if (_allocatedResources.ContainsKey(userIdentifier))
         {
-            return RemoveResourcesForUser(userIdentifier);
+            return false;
         }
 
         return true;
@@ -35,12 +40,13 @@ public class WebSocketResourceManager : IWebSocketResourceManager
         });
     }
 
-    public void CleanupContainers()
+    public async Task CleanupContainersAsync()
     {
         var keysForCleanup = new List<string>();
         foreach (var ressource in _allocatedResources)
         {
-            if (ressource.Value.StartedAt < DateTime.UtcNow.AddSeconds(-AllowedMaxLifeTimeInSeconds))
+            if (ressource.Value.StartedAt <
+                DateTime.UtcNow.AddSeconds(-_sandboxerConfig.AllowedMaxLifeTimeContainerInSeconds))
             {
                 keysForCleanup.Add(ressource.Key);
             }
@@ -48,16 +54,16 @@ public class WebSocketResourceManager : IWebSocketResourceManager
 
         foreach (var key in keysForCleanup)
         {
-            RemoveResourcesForUser(key);
+            await RemoveResourcesForUserAsync(key);
         }
     }
 
 
-    private bool RemoveResourcesForUser(string userIdentifier)
+    public async Task<bool> RemoveResourcesForUserAsync(string userIdentifier)
     {
         if (_allocatedResources.TryRemove(userIdentifier, out var removedContainer))
         {
-            removedContainer.Session.Dispose();
+            await removedContainer.Session.Cleanup();
             return true;
         }
 

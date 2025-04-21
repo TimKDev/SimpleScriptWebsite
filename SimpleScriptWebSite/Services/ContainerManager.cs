@@ -1,4 +1,3 @@
-using System.Net.WebSockets;
 using SimpleScriptWebSite.Interfaces;
 using SimpleScriptWebSite.Models;
 
@@ -6,21 +5,24 @@ namespace SimpleScriptWebSite.Services;
 
 public class ContainerManager : IContainerManager
 {
-    private readonly IWebSocketResourceManager _webSocketResourceManager;
+    private readonly IContainerOrchestrator _containerOrchestrator;
     private readonly IContainerRepository _containerRepository;
     private readonly IFingerPrintService _fingerPrintService;
 
-    public ContainerManager(IWebSocketResourceManager webSocketResourceManager,
+    public const string ExecutionCompletedMessage = "EXECUTION_COMPLETED";
+
+    public ContainerManager(IContainerOrchestrator containerOrchestrator,
         IContainerRepository containerRepository,
         IFingerPrintService fingerPrintService)
     {
-        _webSocketResourceManager = webSocketResourceManager;
+        _containerOrchestrator = containerOrchestrator;
         _containerRepository = containerRepository;
         _fingerPrintService = fingerPrintService;
     }
 
-    public async Task<ContainerCreationResult> StartDotNetRuntimeContainerAsync(string startCommand,
-        CancellationToken cancellationToken)
+    public async Task<ContainerCreationResult> StartDotNetRuntimeContainerAsync(string dllFileName,
+        CancellationToken cancellationToken,
+        string[]? args = null)
     {
         var userIdentifier = _fingerPrintService.GetUserIdentifier();
         if (userIdentifier is null)
@@ -28,20 +30,37 @@ public class ContainerManager : IContainerManager
             return ContainerCreationResult.Create(ContainerCreationStatus.MissingFingerPrintForUser);
         }
 
-        if (!_webSocketResourceManager.IsUserAllowedToStartContainer(userIdentifier))
+        if (!await _containerOrchestrator.IsUserAllowedToStartContainerAsync(userIdentifier))
         {
             return ContainerCreationResult.Create(ContainerCreationStatus.ContainerLimitExceeded);
         }
 
         var createdContainer = await _containerRepository.CreateAndStartContainerAsync(
             "mcr.microsoft.com/dotnet/runtime:9.0",
-            startCommand, ["/ConsoleApp:/app"], 256, 0.5, cancellationToken);
+            CreateStartCommand(dllFileName, args), ["/ConsoleApp:/app"], 256, 0.5, cancellationToken);
 
-        if (!_webSocketResourceManager.TryAddContainer(userIdentifier, createdContainer))
+        if (!_containerOrchestrator.TryAddContainer(userIdentifier, createdContainer))
         {
             return ContainerCreationResult.Create(ContainerCreationStatus.ContainerLimitExceeded);
         }
 
-        return ContainerCreationResult.Create(createdContainer);
+        return ContainerCreationResult.Create(createdContainer, userIdentifier);
+    }
+
+    private string CreateStartCommand(string dllFileName, string[]? args)
+    {
+        //Shebang is used in order for the ExecutionCompleteMessage to be sent after script is complete
+        var startCommand = "#!/bin/sh\n";
+        startCommand += $"dotnet /app/{dllFileName}";
+
+        if (args != null && args.Length > 0)
+        {
+            startCommand += " " + string.Join(" ", args);
+        }
+
+        //Notify output receiver that start command is finished.
+        startCommand += $"\n echo \"{ExecutionCompletedMessage}\"";
+
+        return startCommand;
     }
 }

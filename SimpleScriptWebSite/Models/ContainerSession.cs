@@ -4,14 +4,13 @@ using SimpleScriptWebSite.Interfaces;
 
 namespace SimpleScriptWebSite.Models;
 
-public class ContainerSession : IDisposable
+public class ContainerSession
 {
     private readonly IContainerRepository _containerRepository;
     private readonly MultiplexedStream _stream;
     private readonly CancellationTokenSource _cts;
     private readonly byte[] _buffer = new byte[81920];
     private readonly string _containerId;
-    private bool _disposed;
 
     public event EventHandler<string>? OutputReceived;
     public event EventHandler<string>? ErrorReceived;
@@ -42,18 +41,12 @@ public class ContainerSession : IDisposable
         await _stream.WriteAsync(bytes, 0, bytes.Length, cancellationToken);
     }
 
-    public void Dispose()
+    public async ValueTask Cleanup()
     {
-        if (_disposed)
-        {
-            return;
-        }
-
-        _disposed = true;
-        _cts.Cancel();
+        await _cts.CancelAsync();
         _cts.Dispose();
         _stream.Dispose();
-        _ = StopContainerAsync();
+        await StopContainerAsync();
     }
 
     private async Task StopContainerAsync()

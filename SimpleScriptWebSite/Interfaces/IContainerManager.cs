@@ -4,7 +4,7 @@ namespace SimpleScriptWebSite.Interfaces;
 
 public interface IContainerManager
 {
-    Task<ContainerCreationResult> StartDotNetRuntimeContainerAsync(
-        string startCommand,
-        CancellationToken cancellationToken);
+    Task<ContainerCreationResult> StartDotNetRuntimeContainerAsync(string dllFileName,
+        CancellationToken cancellationToken,
+        string[]? args = null);
 }
