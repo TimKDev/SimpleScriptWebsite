@@ -64,7 +64,9 @@ public class ContainerSession
             {
                 var result = await _stream.ReadOutputAsync(_buffer, 0, _buffer.Length, cancellationToken);
                 if (result.EOF)
+                {
                     break;
+                }
 
                 var message = Encoding.UTF8.GetString(_buffer, 0, result.Count);
 

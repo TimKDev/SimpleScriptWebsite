@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "7oJ2wB8oQ78=",
+  "dgSpecHash": "d2+fWA7xEFI=",
   "success": true,
   "projectFilePath": "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/SimpleScriptWebSite.csproj",
   "expectedPackageFiles": [
@@ -8,7 +8,7 @@
     "/home/tim/.nuget/packages/newtonsoft.json/13.0.1/newtonsoft.json.13.0.1.nupkg.sha512",
     "/home/tim/.nuget/packages/system.buffers/4.5.1/system.buffers.4.5.1.nupkg.sha512",
     "/home/tim/.nuget/packages/system.threading.tasks.extensions/4.5.4/system.threading.tasks.extensions.4.5.4.nupkg.sha512",
-    "/home/tim/.nuget/packages/microsoft.aspnetcore.app.ref/9.0.3/microsoft.aspnetcore.app.ref.9.0.3.nupkg.sha512"
+    "/home/tim/.nuget/packages/microsoft.aspnetcore.app.ref/9.0.4/microsoft.aspnetcore.app.ref.9.0.4.nupkg.sha512"
   ],
   "logs": []
 }

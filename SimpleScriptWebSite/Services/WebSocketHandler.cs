@@ -27,9 +27,9 @@ internal class WebSocketHandler : IWebSocketHandler
 
     public async Task HandleWebSocketConnectionAsync(WebSocket webSocket, CancellationToken cancellationToken)
     {
-        // Create a timeout token source
         using var timeoutCts =
             new CancellationTokenSource(TimeSpan.FromSeconds(_sandboxerConfig.AllowedMaxLifeTimeContainerInSeconds));
+
         using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, timeoutCts.Token);
         ContainerCreationResult? creationResult = null;
 

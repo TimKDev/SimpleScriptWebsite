@@ -7,32 +7,40 @@
     ports:
       - "10000:8080"
     environment:
-      DOCKER_HOST: "tcp://docker:2375"
-      #- DOCKER_HOST=https://docker:2376
-      #- DOCKER_TLS_VERIFY=1
-      #- DOCKER_CERT_PATH=/certs/client
+      # Use TLS port 2376
+      DOCKER_HOST: "tcp://docker:2376"
+      # Enable TLS verification
+      DOCKER_TLS_VERIFY: "1"
+      # Path inside the container where client certs are mounted
+      DOCKER_CERT_PATH: "/certs/client"
     depends_on:
       - docker
-    #volumes:
+    volumes:
+      # Mount generated client certs + CA cert from host into container
+      - ./certs/client/client.pem:/certs/client/cert.pem:ro
+      - ./certs/client/client-key.pem:/certs/client/key.pem:ro
+      - ./certs/ca.pem:/certs/client/ca.pem:ro
       #- /home/tim/Source/projects/SimpleScriptWebSite/ConsoleApp:/ConsoleApp
-    #  - docker-certs:/certs/client:ro
 
   docker:
     image: docker:dind
     privileged: true
     environment:
-      DOCKER_TLS_CERTDIR: ""
-      DOCKERD_OPTS: "-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --tlsverify=false"
-      #DOCKER_TLS_CERTDIR: "/certs/client"
+      # Tell Docker daemon where to find server certs
+      DOCKER_TLS_CERTDIR: "/certs/server"
+      # Remove old DOCKERD_OPTS, TLS is handled by DOCKER_TLS_CERTDIR now
+      # DOCKERD_OPTS: "-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --tlsverify=false --tls=false"
     ports:
-      - "2375:2375"
-      #- "2376:2376"
+      # Expose TLS port 2376 instead of 2375
+      - "2376:2376"
     volumes:
       - docker-data:/var/lib/docker
+      # Mount generated server certs + CA cert from host into container
+      - ./certs/server/server.pem:/certs/server/cert.pem:ro
+      - ./certs/server/server-key.pem:/certs/server/key.pem:ro
+      - ./certs/ca.pem:/certs/server/ca.pem:ro
       # TODO Hier sollte ein Host unabhängiger Pfad stehen!
       - /home/tim/Source/projects/SimpleScriptWebSite/ConsoleApp:/ConsoleApp
-      #- docker-certs:/certs/client
 
 volumes:
-  docker-certs:
   docker-data:
