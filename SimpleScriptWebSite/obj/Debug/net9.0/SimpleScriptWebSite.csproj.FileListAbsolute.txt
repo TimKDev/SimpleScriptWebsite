@@ -44,3 +44,4 @@
 /home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/31yttbb58v-itywpav07k.gz
 /home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/0w18hnybtw-z58ftwv46h.gz
 /home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/obj/Debug/net9.0/compressed/9dk4siv0hv-o1383uxprk.gz
+/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite/bin/Debug/net9.0/Docker.DotNet.X509.dll

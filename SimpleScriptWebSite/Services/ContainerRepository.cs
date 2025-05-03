@@ -1,5 +1,7 @@
+using System.Security.Cryptography.X509Certificates;
 using Docker.DotNet;
 using Docker.DotNet.Models;
+using Docker.DotNet.X509;
 using SimpleScriptWebSite.Interfaces;
 using SimpleScriptWebSite.Models;
 
@@ -14,7 +16,17 @@ public class ContainerRepository : IContainerRepository
         var dockerHost = Environment.GetEnvironmentVariable("DOCKER_HOST") ??
                          throw new Exception("Docker Host not set");
 
-        _client = new DockerClientConfiguration(new Uri(dockerHost)).CreateClient();
+        var certPath = Environment.GetEnvironmentVariable("DOCKER_CERT_PATH") ??
+                       throw new Exception("Docker Cert Path not set");
+
+        //var caCertPath = Path.Combine(certPath, "ca.pem");
+        var clientCertPath = Path.Combine(certPath, "cert.pem");
+        var clientKeyPath = Path.Combine(certPath, "key.pem");
+
+        var clientCert = X509Certificate2.CreateFromPemFile(clientCertPath, clientKeyPath);
+        var credentials = new CertificateCredentials(clientCert);
+
+        _client = new DockerClientConfiguration(new Uri(dockerHost), credentials).CreateClient();
     }
 
     public async Task<ContainerSession> CreateAndStartContainerAsync(

@@ -8,7 +8,8 @@
     ".NETCoreApp,Version=v9.0": {
       "SimpleScriptWebSite/1.0.0": {
         "dependencies": {
-          "Docker.DotNet": "3.125.15"
+          "Docker.DotNet": "3.125.15",
+          "Docker.DotNet.X509": "3.125.15"
         },
         "runtime": {
           "SimpleScriptWebSite.dll": {}
@@ -22,6 +23,17 @@
         },
         "runtime": {
           "lib/netstandard2.1/Docker.DotNet.dll": {
+            "assemblyVersion": "3.125.0.0",
+            "fileVersion": "3.125.15.1"
+          }
+        }
+      },
+      "Docker.DotNet.X509/3.125.15": {
+        "dependencies": {
+          "Docker.DotNet": "3.125.15"
+        },
+        "runtime": {
+          "lib/netstandard2.1/Docker.DotNet.X509.dll": {
             "assemblyVersion": "3.125.0.0",
             "fileVersion": "3.125.15.1"
           }
@@ -51,6 +63,13 @@
       "sha512": "sha512-XN8FKxVv8Mjmwu104/Hl9lM61pLY675s70gzwSj8KR5pwblo8HfWLcCuinh9kYsqujBkMH4HVRCEcRuU6al4BQ==",
       "path": "docker.dotnet/3.125.15",
       "hashPath": "docker.dotnet.3.125.15.nupkg.sha512"
+    },
+    "Docker.DotNet.X509/3.125.15": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ONQN7ImrL3tHStUUCCPHwrFFQVpIpE+7L6jaDAMwSF+yTEmeWBmRARQZDRuvfj/+WtB8RR0oTW0tT3qQMSyHOw==",
+      "path": "docker.dotnet.x509/3.125.15",
+      "hashPath": "docker.dotnet.x509.3.125.15.nupkg.sha512"
     },
     "Newtonsoft.Json/13.0.1": {
       "type": "package",

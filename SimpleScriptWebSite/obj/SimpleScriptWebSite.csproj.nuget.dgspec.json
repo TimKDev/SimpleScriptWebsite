@@ -46,6 +46,10 @@
             "Docker.DotNet": {
               "target": "Package",
               "version": "[3.125.15, )"
+            },
+            "Docker.DotNet.X509": {
+              "target": "Package",
+              "version": "[3.125.15, )"
             }
           },
           "imports": [

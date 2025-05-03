@@ -20,6 +20,22 @@
           }
         }
       },
+      "Docker.DotNet.X509/3.125.15": {
+        "type": "package",
+        "dependencies": {
+          "Docker.DotNet": "3.125.15"
+        },
+        "compile": {
+          "lib/netstandard2.1/Docker.DotNet.X509.dll": {
+            "related": ".pdb"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.1/Docker.DotNet.X509.dll": {
+            "related": ".pdb"
+          }
+        }
+      },
       "Newtonsoft.Json/13.0.1": {
         "type": "package",
         "compile": {
@@ -69,6 +85,23 @@
         "lib/netstandard2.0/Docker.DotNet.pdb",
         "lib/netstandard2.1/Docker.DotNet.dll",
         "lib/netstandard2.1/Docker.DotNet.pdb"
+      ]
+    },
+    "Docker.DotNet.X509/3.125.15": {
+      "sha512": "ONQN7ImrL3tHStUUCCPHwrFFQVpIpE+7L6jaDAMwSF+yTEmeWBmRARQZDRuvfj/+WtB8RR0oTW0tT3qQMSyHOw==",
+      "type": "package",
+      "path": "docker.dotnet.x509/3.125.15",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "docker.dotnet.x509.3.125.15.nupkg.sha512",
+        "docker.dotnet.x509.nuspec",
+        "icon.png",
+        "lib/netstandard2.0/Docker.DotNet.X509.dll",
+        "lib/netstandard2.0/Docker.DotNet.X509.pdb",
+        "lib/netstandard2.1/Docker.DotNet.X509.dll",
+        "lib/netstandard2.1/Docker.DotNet.X509.pdb"
       ]
     },
     "Newtonsoft.Json/13.0.1": {
@@ -169,7 +202,8 @@
   },
   "projectFileDependencyGroups": {
     "net9.0": [
-      "Docker.DotNet >= 3.125.15"
+      "Docker.DotNet >= 3.125.15",
+      "Docker.DotNet.X509 >= 3.125.15"
     ]
   },
   "packageFolders": {
@@ -215,6 +249,10 @@
         "targetAlias": "net9.0",
         "dependencies": {
           "Docker.DotNet": {
+            "target": "Package",
+            "version": "[3.125.15, )"
+          },
+          "Docker.DotNet.X509": {
             "target": "Package",
             "version": "[3.125.15, )"
           }
