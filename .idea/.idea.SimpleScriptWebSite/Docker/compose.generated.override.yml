@@ -24,13 +24,13 @@ services:
       RESHARPER_LOG_CONF: "/etc/opt/rider-debugger/backend-log.xml"
     image: "simplescriptwebsite:dev"
     ports:
-    - "127.0.0.1:57012:57100"
-    - "127.0.0.1:57212:57300"
+    - "127.0.0.1:57000:57100"
+    - "127.0.0.1:57200:57300"
     volumes:
     - "/home/tim/.nuget/packages:/home/app/.nuget/packages"
     - "/home/tim/Source/projects/SimpleScriptWebSite/SimpleScriptWebSite:/app:rw"
     - "/home/tim/Source/projects/SimpleScriptWebSite:/src:rw"
     - "/home/tim/.local/share/JetBrains/RiderRemoteDebugger/2024.2.5/Linux64:/opt/rider-debugger"
     - "/home/tim/applications/rider/bin:/etc/opt/rider-debugger/backend-log.xml"
-    - "/home/tim/.cache/JetBrains/Rider2024.2/log/DebuggerWorker/JetBrains.Debugger.Worker.2025_5_03_15_30_33:/var/opt/rider-debugger:rw"
+    - "/home/tim/.cache/JetBrains/Rider2024.2/log/DebuggerWorker/JetBrains.Debugger.Worker.2025_5_03_16_11_41:/var/opt/rider-debugger:rw"
     working_dir: "/app"
