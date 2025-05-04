@@ -482,3 +482,12 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+/certs
+*/wwwroot
+*/obj
+.idea
+.run
+SimpleScriptWebSite.sln.DotSettings.user
+HelloWorld
+*/bin
