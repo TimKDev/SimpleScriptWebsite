@@ -3,6 +3,11 @@ USER $APP_UID
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
+# Add the custom CA certificate to the trust store:
+USER root
+COPY ["certs/ca.pem", "/usr/local/share/ca-certificates/my-custom-docker-ca.crt"]
+RUN update-ca-certificates
+USER $APP_UID
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
@@ -35,10 +40,6 @@ RUN apt-get update && apt-get install -y \
     apt-get update && \
     apt-get install -y docker-ce-cli
 
-# Add the custom CA certificate to the trust store
-COPY ["certs/ca.pem", "/usr/local/share/ca-certificates/my-custom-docker-ca.crt"]
-RUN update-ca-certificates
-
 COPY --from=publish /app/publish .
-#USER $APP_UID
+USER $APP_UID
 ENTRYPOINT ["dotnet", "SimpleScriptWebSite.dll"]

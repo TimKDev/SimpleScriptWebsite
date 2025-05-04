@@ -19,7 +19,6 @@ public class ContainerRepository : IContainerRepository
         var certPath = Environment.GetEnvironmentVariable("DOCKER_CERT_PATH") ??
                        throw new Exception("Docker Cert Path not set");
 
-        //var caCertPath = Path.Combine(certPath, "ca.pem");
         var clientCertPath = Path.Combine(certPath, "cert.pem");
         var clientKeyPath = Path.Combine(certPath, "key.pem");
 

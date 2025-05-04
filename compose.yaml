@@ -17,7 +17,6 @@
     volumes:
       - ./certs/client/client.pem:/certs/client/cert.pem:ro
       - ./certs/client/client-key.pem:/certs/client/key.pem:ro
-      - ./certs/ca.pem:/certs/client/ca.pem:ro
 
   docker:
     image: docker:dind
