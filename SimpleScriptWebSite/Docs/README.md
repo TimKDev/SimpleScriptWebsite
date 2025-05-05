@@ -56,17 +56,27 @@ The following steps were necessary to archive this:
    a Certificate Signing Request (CSR). This is a standard to provide a CA with information how a certificate should be
    created. In this case it defines the Common Name as `docker` which must match DNS name of the DinD Container in the
    docker-compose network.
-6.
+6. Create a Extension file `certs/server/server-ext.cnf` with the content: ===========
 
+```
+subjectAltName = DNS:docker,IP:127.0.0.1
+extendedKeyUsage = serverAuth 
+```
+
+7.
 `openssl x509 -req -days 365 -sha256 -in certs/server/server.csr -CA certs/ca.pem -CAkey certs/ca-key.pem -CAcreateserial -out certs/server/server.pem -extfile certs/server/server-ext.cnf`
 uses the Custom CA to create a certificate with the information defined in the CSR.
 
-7. `openssl genrsa -out certs/client/client-key.pem 4096`: Create private Key for Client.
-8. `openssl req -subj "/CN=client" -new -key certs/client/client-key.pem -out certs/client/client.csr`: CSR for Common
+8. `openssl genrsa -out certs/client/client-key.pem 4096`: Create private Key for Client.
+9. `openssl req -subj "/CN=client" -new -key certs/client/client-key.pem -out certs/client/client.csr`: CSR for Common
    Name for Client, but the Common Name is not important.
-9. Create a Client Extension File `client-ext.cnf` with the content: `extendedKeyUsage = clientAuth `. This defines that
-   this a client certificate.
-10.
+10. Create a Client Extension File `certs/client/client-ext.cnf` with the content: `extendedKeyUsage = clientAuth`. This
+    defines that
+    this a client certificate.
+11.
 
 `openssl x509 -req -days 365 -sha256 -in certs/client/client.csr -CA certs/ca.pem -CAkey certs/ca-key.pem -CAcreateserial -out certs/client/client.pem -extfile certs/client/client-ext.cnf`:
 Create the client certificate.
+
+12. `chmod --reference=client.pem client-key.pem`: Copy correct permission to key.
+    
