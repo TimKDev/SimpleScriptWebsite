@@ -12,7 +12,7 @@ public interface IContainerRepository
         string imageName,
         string startCommand,
         List<string> binds,
-        int? memoryLimit = null,
-        double? cpuLimit = null,
+        int? memoryLimitInMb = null,
+        double? cpuLimitInPercent = null,
         CancellationToken cancellationToken = default);
 }

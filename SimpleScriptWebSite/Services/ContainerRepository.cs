@@ -32,8 +32,8 @@ public class ContainerRepository : IContainerRepository
         string imageName,
         string startCommand,
         List<string> binds,
-        int? memoryLimit = null,
-        double? cpuLimit = null,
+        int? memoryLimitInMb = null,
+        double? cpuLimitInPercent = null,
         CancellationToken cancellationToken = default)
     {
         await _client.Images.CreateImageAsync(
@@ -46,8 +46,8 @@ public class ContainerRepository : IContainerRepository
             cancellationToken
         );
 
-        var cpuShares = cpuLimit.HasValue ? (long)(cpuLimit.Value * 1024) : 0;
-        var memoryLimitBytes = memoryLimit.HasValue ? (long)memoryLimit.Value * 1024 * 1024 : 0;
+        var cpuShares = cpuLimitInPercent.HasValue ? (long)(cpuLimitInPercent.Value * 1024) : 0;
+        var memoryLimitBytes = memoryLimitInMb.HasValue ? (long)memoryLimitInMb.Value * 1024 * 1024 : 0;
 
         var createResponse = await _client.Containers.CreateContainerAsync(
             new CreateContainerParameters

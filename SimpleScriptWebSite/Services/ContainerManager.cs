@@ -30,6 +30,8 @@ public class ContainerManager : IContainerManager
             return ContainerCreationResult.Create(ContainerCreationStatus.MissingFingerPrintForUser);
         }
 
+        //Das Dictonary im Orchestrator muss solange geblockt werden, bis TryAddContainer aufgerufen wurde, sonst kann bei einem DDos
+        //Angriff schon 10000 mal versucht werden einen neuen Container zu erzeugen auch wenn dieser direkt danach weggeschmissen wird!
         if (!await _containerOrchestrator.IsUserAllowedToStartContainerAsync(userIdentifier))
         {
             return ContainerCreationResult.Create(ContainerCreationStatus.ContainerLimitExceeded);
@@ -37,10 +39,11 @@ public class ContainerManager : IContainerManager
 
         var createdContainer = await _containerRepository.CreateAndStartContainerAsync(
             "mcr.microsoft.com/dotnet/runtime:9.0",
-            CreateStartCommand(dllFileName, args), ["/ConsoleApp:/app"], 256, 0.5, cancellationToken);
+            CreateStartCommand(dllFileName, args), ["/ConsoleApp:/app"], 50, 0.005, cancellationToken);
 
         if (!_containerOrchestrator.TryAddContainer(userIdentifier, createdContainer))
         {
+            await createdContainer.Cleanup();
             return ContainerCreationResult.Create(ContainerCreationStatus.ContainerLimitExceeded);
         }
 
