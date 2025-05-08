@@ -66,6 +66,8 @@ public class ContainerOrchestrator : IContainerOrchestrator
         {
             try
             {
+                //TODO Ein Problem ist, dass der Cleanup länger dauert als 5 Sekunden, d.h. der User kann zwei Requests erst nach 5 Sekunden
+                //zueinander abschicken => Wird in der UX ein Problem
                 await containerInformation.Session.Cleanup();
             }
             catch
