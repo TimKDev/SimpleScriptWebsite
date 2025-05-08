@@ -30,8 +30,6 @@ public class ContainerManager : IContainerManager
             return ContainerCreationResult.Create(ContainerCreationStatus.MissingFingerPrintForUser);
         }
 
-        //Das Dictonary im Orchestrator muss solange geblockt werden, bis TryAddContainer aufgerufen wurde, sonst kann bei einem DDos
-        //Angriff schon 10000 mal versucht werden einen neuen Container zu erzeugen auch wenn dieser direkt danach weggeschmissen wird!
         if (!await _containerOrchestrator.IsUserAllowedToStartContainerAsync(userIdentifier))
         {
             return ContainerCreationResult.Create(ContainerCreationStatus.ContainerLimitExceeded);
