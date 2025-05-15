@@ -35,9 +35,7 @@ public class ContainerManager : IContainerManager
             return ContainerCreationResult.Create(ContainerCreationStatus.ContainerLimitExceeded);
         }
 
-        var createdContainer = await _containerRepository.CreateAndStartContainerAsync(
-            "mcr.microsoft.com/dotnet/runtime:9.0",
-            CreateStartCommand(dllFileName, args), ["/ConsoleApp:/app"], 50, 0.005, cancellationToken);
+        var createdContainer = await _containerRepository.CreateAndStartContainerAsync(CreateStartCommand(dllFileName, args), ["/ConsoleApp:/app"], 50, 0.005, cancellationToken);
 
         if (!_containerOrchestrator.TryAddContainer(userIdentifier, createdContainer))
         {

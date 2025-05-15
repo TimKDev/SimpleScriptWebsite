@@ -2,14 +2,19 @@ using System.Security.Cryptography.X509Certificates;
 using Docker.DotNet;
 using Docker.DotNet.Models;
 using Docker.DotNet.X509;
+using Microsoft.Extensions.Options;
 using SimpleScriptWebSite.Interfaces;
 using SimpleScriptWebSite.Models;
+using System.IO.Compression;
+using System.Text;
+using System.Formats.Tar;
 
 namespace SimpleScriptWebSite.Services;
 
 public class ContainerRepository : IContainerRepository
 {
     private readonly DockerClient _client;
+    private const string ConsoleAppImageName = "console-app-container";
 
     public ContainerRepository()
     {
@@ -28,23 +33,15 @@ public class ContainerRepository : IContainerRepository
         _client = new DockerClientConfiguration(new Uri(dockerHost), credentials).CreateClient();
     }
 
+
     public async Task<ContainerSession> CreateAndStartContainerAsync(
-        string imageName,
         string startCommand,
         List<string> binds,
         int? memoryLimitInMb = null,
         double? cpuLimitInPercent = null,
         CancellationToken cancellationToken = default)
     {
-        await _client.Images.CreateImageAsync(
-            new ImagesCreateParameters
-            {
-                FromImage = imageName,
-            },
-            null,
-            new Progress<JSONMessage>(),
-            cancellationToken
-        );
+        await BuildConsoleAppImageAsync(cancellationToken);
 
         var cpuShares = cpuLimitInPercent.HasValue ? (long)(cpuLimitInPercent.Value * 1024) : 0;
         var memoryLimitBytes = memoryLimitInMb.HasValue ? (long)memoryLimitInMb.Value * 1024 * 1024 : 0;
@@ -52,7 +49,7 @@ public class ContainerRepository : IContainerRepository
         var createResponse = await _client.Containers.CreateContainerAsync(
             new CreateContainerParameters
             {
-                Image = imageName,
+                Image = ConsoleAppImageName,
                 AttachStdin = true,
                 AttachStdout = true,
                 AttachStderr = true,
@@ -116,6 +113,44 @@ public class ContainerRepository : IContainerRepository
             {
                 WaitBeforeKillSeconds = 10
             },
+            cancellationToken
+        );
+    }
+
+    private async Task BuildConsoleAppImageAsync(CancellationToken cancellationToken = default)
+    {
+        var images = await _client.Images.ListImagesAsync(new ImagesListParameters
+        {
+            All = true
+        }, cancellationToken);
+
+        if (images.Any(i => i.RepoTags?.Contains($"{ConsoleAppImageName}:latest") == true))
+        {
+            return;
+        }
+
+        var fullDockerfilePath = Path.Combine("/Dockerfile");
+
+        var buildParameters = new ImageBuildParameters
+        {
+            Dockerfile = "Dockerfile",
+            Tags = new List<string> { $"{ConsoleAppImageName}:latest" }
+        };
+
+        using var tarStream = new MemoryStream();
+        await using (var archive = new TarWriter(tarStream, TarEntryFormat.Pax, leaveOpen: true))
+        {
+            await archive.WriteEntryAsync(fullDockerfilePath, "Dockerfile", cancellationToken);
+        }
+
+        tarStream.Seek(0, SeekOrigin.Begin);
+
+        await _client.Images.BuildImageFromDockerfileAsync(
+            buildParameters,
+            tarStream,
+            new List<AuthConfig>(),
+            new Dictionary<string, string>(),
+            new Progress<JSONMessage>(),
             cancellationToken
         );
     }

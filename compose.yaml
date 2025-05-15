@@ -17,6 +17,7 @@
     volumes:
       - ./certs/client/client.pem:/certs/client/cert.pem:ro
       - ./certs/client/client-key.pem:/certs/client/key.pem:ro
+      - /home/tim/Source/projects/SimpleScriptWebSite/Dockerfiles/Dockerfile:/Dockerfile
 
   docker:
     image: docker:dind

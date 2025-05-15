@@ -11,16 +11,14 @@ internal class WebSocketHandler : IWebSocketHandler
     private readonly IInputValidator _inputValidator;
     private readonly IContainerManager _containerManager;
     private readonly SandboxerConfig _sandboxerConfig;
-    private readonly IFingerPrintService _fingerPrintService;
     private readonly IContainerOrchestrator _containerOrchestrator;
 
     public WebSocketHandler(IInputValidator inputValidator, IContainerManager containerManager,
-        IOptions<SandboxerConfig> sandboxerConfig, IFingerPrintService fingerPrintService,
+        IOptions<SandboxerConfig> sandboxerConfig, 
         IContainerOrchestrator containerOrchestrator)
     {
         _inputValidator = inputValidator;
         _containerManager = containerManager;
-        _fingerPrintService = fingerPrintService;
         _containerOrchestrator = containerOrchestrator;
         _sandboxerConfig = sandboxerConfig.Value;
     }

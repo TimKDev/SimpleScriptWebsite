@@ -8,9 +8,7 @@ public interface IContainerRepository
 
     Task StopContainerAsync(string containerId, CancellationToken cancellationToken = default);
 
-    Task<ContainerSession> CreateAndStartContainerAsync(
-        string imageName,
-        string startCommand,
+    Task<ContainerSession> CreateAndStartContainerAsync(string startCommand,
         List<string> binds,
         int? memoryLimitInMb = null,
         double? cpuLimitInPercent = null,

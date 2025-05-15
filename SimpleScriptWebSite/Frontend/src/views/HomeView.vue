@@ -1,7 +1,12 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import TheWelcome from '../components/TheWelcome.vue'
 
 let socket: WebSocket | null = null;
+
+const mainProgram = ref('');
+const programInput = ref('');
+const output = ref('');
 
 function stop() {
   if (!socket) return;
@@ -29,19 +34,23 @@ function start() {
   socket.onopen = () => {
     if (!socket) return;
     console.log('WebSocket connection established');
-    socket.send('Hello from the client!');
+    const programToExecute = mainProgram.value.replace(/"/g, "'");
+    socket.send(`execute-direct "${programToExecute}"`);
   };
 
   socket.onmessage = (event) => {
-    console.log('Message from server:', event.data);
+    console.log(event.data);
+    output.value += "\n" + event.data;
   };
 
   socket.onerror = (error) => {
-    console.error('WebSocket error:', error);
+    console.error(error);
+    output.value += "\nError occurred in WebSocket connection";
   };
 
   socket.onclose = (event) => {
     console.log('WebSocket connection closed:', event.code, event.reason);
+    output.value = "";
     socket = null;
   };
 }
@@ -49,9 +58,14 @@ function start() {
 
 <template>
   <main>
-    <button @click="start">Start Console App</button>
-    <button @click="stop">Stop Console App</button>
-    <input id="name">
-    <button @click="sendInput">Send</button>
+    <textarea v-model="mainProgram" placeholder="Füge hier deinen Simple Script Code ein."></textarea>
+    <button @click="start">Starte Ausführung</button>
+    <button @click="stop">Stoppe Ausführung</button>
+    <input v-model="programInput" placeholder="Programm Input">
+    <button @click="sendInput">Sende</button>
+    <textarea v-model="output" readonly></textarea>
   </main>
 </template>
+<style>
+
+</style>
