@@ -72,28 +72,29 @@
         </div>
 
         <div class="flex items-center mb-4">
-            <input
-                type="text"
-                v-model="programInput"
-                placeholder="Enter program input here..."
-                class="flex-grow bg-[#1f2028] p-2 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white"
-                :disabled="!socket || socket.readyState !== WebSocketReadyState.OPEN"
-            />
-            <button
-                id="sendInputButton"
-                class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-r-lg flex items-center gap-2"
-                aria-label="Send Input"
-                tabindex="0"
-                @click="sendProgramInput"
-                :disabled="!socket || socket.readyState !== WebSocketReadyState.OPEN"
-            >
-                <span>➤</span> Send Input
-            </button>
+          <input
+            type="text"
+            v-model="programInput"
+            placeholder="Enter program input here..."
+            class="flex-grow bg-[#1f2028] p-2 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white"
+          />
+          <button
+            id="sendInputButton"
+            class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-r-lg flex items-center gap-2"
+            aria-label="Send Input"
+            tabindex="0"
+            @click="sendProgramInput"
+          >
+            <span>➤</span> Send Input
+          </button>
         </div>
 
         <div class="bg-[#1f2028] p-4 rounded-lg flex-grow flex flex-col min-h-[100px]">
           <h3 class="text-gray-400 mb-2">Output</h3>
-          <pre id="outputArea" class="text-green-400 font-mono whitespace-pre-wrap flex-grow overflow-auto">{{ output }}</pre>
+          <pre id="outputArea"
+               class="text-green-400 font-mono whitespace-pre-wrap flex-grow overflow-auto">{{
+              output
+            }}</pre>
         </div>
       </div>
 
@@ -102,7 +103,8 @@
         <h2 class="text-2xl text-purple-400 mb-4">About Simple Script</h2>
         <div class="space-y-6">
           <p class="text-gray-300">
-            Simple Script is a straightforward programming language designed for simplicity and ease of use. Perfect for
+            Simple Script is a straightforward programming language designed for simplicity and ease
+            of use. Perfect for
             learning programming concepts and building small applications.
           </p>
           <div>
@@ -116,7 +118,8 @@
             </ul>
           </div>
           <div class="bg-[#2a2b36] p-4 rounded-lg text-gray-300 mt-6">
-            To get started, switch to the "Try Simple Script" tab, write your code in the editor, and click "Run" to see the output.
+            To get started, switch to the "Try Simple Script" tab, write your code in the editor,
+            and click "Run" to see the output.
           </div>
         </div>
       </div>
@@ -125,7 +128,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
+import {ref, onMounted, onUnmounted} from 'vue';
 
 type TabId = 'editorTab' | 'aboutTab';
 type SectionId = 'editorSection' | 'aboutSection';
@@ -141,7 +144,7 @@ const code = ref('');
 const output = ref('');
 const programInput = ref('');
 const socket = ref<WebSocket | null>(null);
-const WebSocketReadyState = { OPEN: 1 }; // WebSocket.OPEN is 1
+const WebSocketReadyState = {OPEN: 1}; // WebSocket.OPEN is 1
 
 
 onMounted(() => {
@@ -190,15 +193,22 @@ const handleRunCode = () => {
     };
 
     socket.value.onmessage = (event) => {
-      output.value += `\\n${event.data}`;
+      if (event.data.startsWith("output:")) {
+        const message = event.data.replace(/output:/g, "");
+        output.value += message;
+      }
+
+      if (event.data.startsWith("error:")) {
+        const message = event.data.replace(/error:/g, "");
+        output.value += message;
+      }
     };
 
     socket.value.onerror = (errorEvent) => {
-      output.value += `\\n${errorEvent}`;
+      output.value += errorEvent;
     };
 
     socket.value.onclose = () => {
-      output.value += "\nProgram finished execution.";
       socket.value = null;
     };
   } catch (error) {
@@ -211,10 +221,9 @@ const handleRunCode = () => {
 const sendProgramInput = () => {
   if (socket.value && socket.value.readyState === WebSocket.OPEN) {
     if (programInput.value.trim() === '') {
-        return;
+      return;
     }
     socket.value.send(programInput.value);
-    output.value += `\\nInput sent: ${programInput.value}`;
     programInput.value = ''; // Clear input after sending
   }
 };
@@ -233,12 +242,14 @@ const stopWebsocket = () => {
 textarea, pre {
   overflow: auto;
 }
+
 /* Minor adjustments for better layout if needed */
 .flex-grow {
-    flex-grow: 1;
+  flex-grow: 1;
 }
+
 .min-h-\[100px\] { /* Tailwind class for min-height, ensure it's correctly applied or defined if custom */
-    min-height: 100px;
+  min-height: 100px;
 }
 
 /* Custom scrollbar styling (optional, for WebKit browsers) */

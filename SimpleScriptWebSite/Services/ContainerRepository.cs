@@ -2,11 +2,8 @@ using System.Security.Cryptography.X509Certificates;
 using Docker.DotNet;
 using Docker.DotNet.Models;
 using Docker.DotNet.X509;
-using Microsoft.Extensions.Options;
 using SimpleScriptWebSite.Interfaces;
 using SimpleScriptWebSite.Models;
-using System.IO.Compression;
-using System.Text;
 using System.Formats.Tar;
 
 namespace SimpleScriptWebSite.Services;

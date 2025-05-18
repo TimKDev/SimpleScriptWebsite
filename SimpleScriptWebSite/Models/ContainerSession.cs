@@ -12,6 +12,8 @@ public class ContainerSession
     private readonly byte[] _buffer = new byte[81920];
     private readonly string _containerId;
 
+    public string ContainerId => _containerId;
+
     public event EventHandler<string>? OutputReceived;
     public event EventHandler<string>? ErrorReceived;
 
@@ -43,10 +45,10 @@ public class ContainerSession
 
     public async ValueTask Cleanup()
     {
-        await _cts.CancelAsync();
-        _cts.Dispose();
-        _stream.Dispose();
-        await StopContainerAsync();
+        // await _cts.CancelAsync();
+        // _cts.Dispose();
+        // _stream.Dispose();
+        // await StopContainerAsync();
     }
 
     private async Task StopContainerAsync()

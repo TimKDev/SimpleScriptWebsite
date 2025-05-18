@@ -1,8 +1,18 @@
+using Serilog;
 using SimpleScriptWebSite.Extensions;
 using SimpleScriptWebSite.Models;
 using SimpleScriptWebSite.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateBootstrapLogger();
+
+builder.Host.UseSerilog((context, services, configuration) => configuration
+    .ReadFrom.Configuration(context.Configuration)
+    .ReadFrom.Services(services)
+    .WriteTo.Console());
 
 builder.Services.AddControllers();
 builder.Services.AddSimpleScriptWebSiteServices();

@@ -7,4 +7,5 @@ public class SandboxerConfig
     public int AllowedMaxLifeTimeContainerInSeconds { get; init; }
     public int WatcherCheckIntervalInSeconds { get; init; }
     public int MaxRequestsPerMinute { get; init; }
+    public string[] IgnoredOutputs { get; init; } = [];
 }

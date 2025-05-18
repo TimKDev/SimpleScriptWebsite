@@ -14,13 +14,14 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Docker.DotNet" Version="3.125.15"/>
+        <PackageReference Include="Docker.DotNet" Version="3.125.15" />
         <PackageReference Include="Docker.DotNet.X509" Version="3.125.15" />
+        <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
     </ItemGroup>
 
     <Target Name="BuildVue" BeforeTargets="Build">
-        <Exec Command="npm install" WorkingDirectory="Frontend"/>
-        <Exec Command="npm run build-only" WorkingDirectory="Frontend"/>
+        <Exec Command="npm install" WorkingDirectory="Frontend" />
+        <Exec Command="npm run build-only" WorkingDirectory="Frontend" />
     </Target>
 
 </Project>

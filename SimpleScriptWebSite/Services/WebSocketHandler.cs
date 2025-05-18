@@ -14,7 +14,7 @@ internal class WebSocketHandler : IWebSocketHandler
     private readonly IContainerOrchestrator _containerOrchestrator;
 
     public WebSocketHandler(IInputValidator inputValidator, IContainerManager containerManager,
-        IOptions<SandboxerConfig> sandboxerConfig, 
+        IOptions<SandboxerConfig> sandboxerConfig,
         IContainerOrchestrator containerOrchestrator)
     {
         _inputValidator = inputValidator;
@@ -131,16 +131,23 @@ internal class WebSocketHandler : IWebSocketHandler
 
         containerSession.OutputReceived += async (_, output) =>
         {
-            if (!string.IsNullOrEmpty(output))
+            if (string.IsNullOrEmpty(output))
             {
-                if (output == ContainerManager.ExecutionCompletedMessage + "\n")
-                {
-                    await executionCompletedCts.CancelAsync();
-                    return;
-                }
-
-                await webSocket.SendMessageAsync($"output:{output}");
+                return;
             }
+
+            if (output == ContainerManager.ExecutionCompletedMessage + "\n")
+            {
+                await executionCompletedCts.CancelAsync();
+                return;
+            }
+
+            if (_sandboxerConfig.IgnoredOutputs.Contains(output.Trim()))
+            {
+                return;
+            }
+
+            await webSocket.SendMessageAsync($"output:{output}");
         };
 
         containerSession.ErrorReceived += async (_, error) =>
