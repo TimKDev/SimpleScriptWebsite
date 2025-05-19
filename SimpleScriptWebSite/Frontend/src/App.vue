@@ -46,46 +46,40 @@
         ></textarea>
 
         <div class="flex justify-between items-center mb-4">
-          <div>
+          <div class="flex items-center flex-grow">
+            <input
+              type="text"
+              v-model="programInput"
+              placeholder="Enter program input here..."
+              class="flex-grow bg-[#1f2028] p-2 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white"
+            />
             <button
-              id="runButton"
-              class="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg flex items-center gap-2 mr-2"
-              aria-label="Run Code"
+              id="sendInputButton"
+              class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-r-lg flex items-center gap-2"
+              aria-label="Send Input"
               tabindex="0"
-              @click="handleRunCode"
-              @keydown.enter.prevent="handleRunCode"
-              @keydown.space.prevent="handleRunCode"
+              @click="sendProgramInput"
             >
-              <span>▶</span> Run Code
-            </button>
-            <button
-              id="stopButton"
-              class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg flex items-center gap-2"
-              aria-label="Stop Connection"
-              tabindex="0"
-              @click="stopWebsocket"
-              :disabled="!socket"
-            >
-              <span>⏹</span> Stop
+              <span>➤</span> Send Input
             </button>
           </div>
-        </div>
-
-        <div class="flex items-center mb-4">
-          <input
-            type="text"
-            v-model="programInput"
-            placeholder="Enter program input here..."
-            class="flex-grow bg-[#1f2028] p-2 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white"
-          />
           <button
-            id="sendInputButton"
-            class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-r-lg flex items-center gap-2"
-            aria-label="Send Input"
+            :id="isRunning ? 'stopButton' : 'runButton'"
+            :class="[
+              'px-4 py-2 rounded-lg flex items-center gap-2 ml-4',
+              isRunning 
+                ? 'bg-red-600 hover:bg-red-700' 
+                : 'bg-purple-600 hover:bg-purple-700'
+            ]"
+            :aria-label="isRunning ? 'Stop Connection' : 'Run Code'"
             tabindex="0"
-            @click="sendProgramInput"
+            @click="handleButtonClick"
+            @keydown.enter.prevent="handleButtonClick"
+            @keydown.space.prevent="handleButtonClick"
           >
-            <span>➤</span> Send Input
+            <span v-if="isRunning">⏹</span>
+            <span v-else>▶</span>
+            {{ isRunning ? 'Stop' : 'Run Code' }}
           </button>
         </div>
 
@@ -144,6 +138,7 @@ const code = ref('');
 const output = ref('');
 const programInput = ref('');
 const socket = ref<WebSocket | null>(null);
+const isRunning = ref(false);
 const WebSocketReadyState = {OPEN: 1}; // WebSocket.OPEN is 1
 
 
@@ -174,20 +169,30 @@ const handleTabSwitch = (activeTabId: TabId, activeSectionId: SectionId) => {
   }
 };
 
-const handleRunCode = () => {
-  if (socket.value) {
-    return;
+const handleButtonClick = () => {
+  if (isRunning.value) {
+    stopWebsocket();
+  } else {
+    handleRunCode();
   }
+}
 
+const handleRunCode = () => {
   const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
   const wsUrl = `${protocol}://localhost:10000/ws`;
 
   try {
     socket.value = new WebSocket(wsUrl);
+    isRunning.value = true;
     output.value = "";
 
     socket.value.onopen = () => {
-      if (!socket.value) return;
+      if (!socket.value) {
+        // This case should ideally not be reached if onopen is called
+        console.error('WebSocket onopen called but socket is null');
+        isRunning.value = false; // Reset state
+        return;
+      }
       const programToExecute = code.value.replace(/"/g, "'");
       socket.value.send(`execute-direct "${programToExecute}"`);
     };
@@ -206,15 +211,18 @@ const handleRunCode = () => {
 
     socket.value.onerror = (errorEvent) => {
       output.value += errorEvent;
+      isRunning.value = false;
     };
 
     socket.value.onclose = () => {
       socket.value = null;
+      isRunning.value = false;
     };
   } catch (error) {
     console.error("Failed to create WebSocket:", error);
     output.value = "";
     socket.value = null;
+    isRunning.value = false;
   }
 };
 
@@ -231,6 +239,8 @@ const sendProgramInput = () => {
 const stopWebsocket = () => {
   if (socket.value) {
     socket.value.close();
+  } else {
+    isRunning.value = false;
   }
 };
 

@@ -32,7 +32,7 @@ app.UseAuthorization();
 app.UseWebSockets(new WebSocketOptions
 {
     KeepAliveInterval = TimeSpan.FromSeconds(15),
-    AllowedOrigins = { "http://localhost:10000", "https://tim-kempkens.com" }
+    AllowedOrigins = { "http://localhost:3000", "http://localhost:10000", "https://tim-kempkens.com" }
 });
 app.MapControllers();
 app.UseDefaultFiles();
