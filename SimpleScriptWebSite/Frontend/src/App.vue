@@ -40,9 +40,10 @@
         <h2 class="text-2xl text-purple-400 mb-4">Code Editor</h2>
         <textarea
           id="codeEditor"
-          class="w-full flex-grow bg-[#1f2028] p-4 rounded-lg font-mono text-green-400 focus:outline-none focus:ring-2 focus:ring-purple-500 mb-4"
+          class="w-full bg-[#1f2028] p-4 rounded-lg font-mono text-green-400 focus:outline-none focus:ring-2 focus:ring-purple-500 mb-4"
           placeholder="// Write your Simple Script code here"
           v-model="code"
+          style="height: 60vh;"
         ></textarea>
 
         <div class="flex justify-between items-center mb-4">
@@ -67,8 +68,8 @@
             :id="isRunning ? 'stopButton' : 'runButton'"
             :class="[
               'px-4 py-2 rounded-lg flex items-center gap-2 ml-4',
-              isRunning 
-                ? 'bg-red-600 hover:bg-red-700' 
+              isRunning
+                ? 'bg-red-600 hover:bg-red-700'
                 : 'bg-purple-600 hover:bg-purple-700'
             ]"
             :aria-label="isRunning ? 'Stop Connection' : 'Run Code'"
@@ -83,12 +84,18 @@
           </button>
         </div>
 
-        <div class="bg-[#1f2028] p-4 rounded-lg flex-grow flex flex-col min-h-[100px]">
+        <div
+          style="height: 15vh; overflow: auto;"
+          class="bg-[#1f2028] p-4 rounded-lg flex flex-col flex-grow min-h-0"
+        >
           <h3 class="text-gray-400 mb-2">Output</h3>
           <pre id="outputArea"
-               class="text-green-400 font-mono whitespace-pre-wrap flex-grow overflow-auto">{{
-              output
-            }}</pre>
+               style="flex: 1; overflow: auto;"
+               :class="[
+                 'font-mono whitespace-pre-wrap',
+                 hasErrorOccurred ? 'text-red-400' : 'text-green-400'
+               ]"
+          >{{ output }}</pre>
         </div>
       </div>
 
@@ -127,6 +134,26 @@ import {ref, onMounted, onUnmounted} from 'vue';
 type TabId = 'editorTab' | 'aboutTab';
 type SectionId = 'editorSection' | 'aboutSection';
 
+const exampleProgram = `PRINT "How many fibonacci numbers do you want?\\n"
+INPUT numsInput
+LET nums = ToNumber(numsInput)
+
+IF nums < 0 DO
+	PRINT "Number should be greater or equal to zero!"
+ENDIF
+
+LET a = 0
+LET b = 1
+WHILE nums > 0 REPEAT
+    PRINT a
+    PRINT "\\n"
+    LET c = a + b
+    LET a = b
+    LET b = c
+    LET nums = nums - 1
+ENDWHILE
+`
+
 // Template refs
 const editorTabButton = ref<HTMLButtonElement | null>(null);
 const aboutTabButton = ref<HTMLButtonElement | null>(null);
@@ -139,11 +166,13 @@ const output = ref('');
 const programInput = ref('');
 const socket = ref<WebSocket | null>(null);
 const isRunning = ref(false);
+const hasErrorOccurred = ref(false);
 const WebSocketReadyState = {OPEN: 1}; // WebSocket.OPEN is 1
 
 
 onMounted(() => {
   handleTabSwitch('editorTab', 'editorSection');
+  code.value = exampleProgram;
 });
 
 onUnmounted(() => {
@@ -178,13 +207,15 @@ const handleButtonClick = () => {
 }
 
 const handleRunCode = () => {
+  isRunning.value = true;
+  output.value = "";
+  hasErrorOccurred.value = false;
+
   const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
   const wsUrl = `${protocol}://localhost:10000/ws`;
 
   try {
     socket.value = new WebSocket(wsUrl);
-    isRunning.value = true;
-    output.value = "";
 
     socket.value.onopen = () => {
       if (!socket.value) {
@@ -200,18 +231,26 @@ const handleRunCode = () => {
     socket.value.onmessage = (event) => {
       if (event.data.startsWith("output:")) {
         const message = event.data.replace(/output:/g, "");
-        output.value += message;
+        if (message.startsWith("Error:")) {
+          hasErrorOccurred.value = true;
+          output.value += message.replace("Error: ", "");
+        } else {
+          output.value += message;
+        }
       }
 
       if (event.data.startsWith("error:")) {
+        hasErrorOccurred.value = true;
         const message = event.data.replace(/error:/g, "");
         output.value += message;
       }
     };
 
     socket.value.onerror = (errorEvent) => {
-      output.value += errorEvent;
+      console.error("WebSocket Error:", errorEvent);
+      output.value += "WebSocket connection error. Please ensure the server is running and accessible.\n";
       isRunning.value = false;
+      hasErrorOccurred.value = true;
     };
 
     socket.value.onclose = () => {
@@ -220,9 +259,10 @@ const handleRunCode = () => {
     };
   } catch (error) {
     console.error("Failed to create WebSocket:", error);
-    output.value = "";
+    output.value += `Failed to initialize WebSocket connection: ${error}. Please ensure the server is running and the URL is correct.\n`;
     socket.value = null;
     isRunning.value = false;
+    hasErrorOccurred.value = true;
   }
 };
 
