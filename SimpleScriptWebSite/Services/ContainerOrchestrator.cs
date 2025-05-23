@@ -34,13 +34,11 @@ public class ContainerOrchestrator : IContainerOrchestrator
                 userIdentifier);
             return true;
         }
-        else
-        {
-            _logger.LogWarning(
-                "User {UserIdentifier} already has an entry in allocated resources. Assuming not allowed to start another yet.",
-                userIdentifier);
-            return false;
-        }
+
+        _logger.LogWarning(
+            "User {UserIdentifier} already has an entry in allocated resources. Assuming not allowed to start another yet.",
+            userIdentifier);
+        return false;
     }
 
     public bool TryAddContainer(string userIdentifier, ContainerSession containerSession)

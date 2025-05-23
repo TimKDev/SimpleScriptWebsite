@@ -45,10 +45,10 @@ public class ContainerSession
 
     public async ValueTask Cleanup()
     {
-        // await _cts.CancelAsync();
-        // _cts.Dispose();
-        // _stream.Dispose();
-        // await StopContainerAsync();
+        await _cts.CancelAsync();
+        _cts.Dispose();
+        _stream.Dispose();
+        await StopContainerAsync();
     }
 
     private async Task StopContainerAsync()

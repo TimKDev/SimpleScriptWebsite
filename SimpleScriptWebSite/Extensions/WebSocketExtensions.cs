@@ -42,7 +42,8 @@ internal static class WebSocketExtensions
         return Encoding.UTF8.GetString(buffer, 0, receiveResult.Count);
     }
 
-    public static async Task SendMessageAsync(this WebSocket webSocket, string message)
+    public static async Task SendMessageAsync(this WebSocket webSocket, string message,
+        CancellationToken cancellationToken)
     {
         if (webSocket.State != WebSocketState.Open)
         {
@@ -51,6 +52,6 @@ internal static class WebSocketExtensions
 
         var bytes = Encoding.UTF8.GetBytes(message);
         var arraySegment = new ArraySegment<byte>(bytes);
-        await webSocket.SendAsync(arraySegment, WebSocketMessageType.Text, true, CancellationToken.None);
+        await webSocket.SendAsync(arraySegment, WebSocketMessageType.Text, true, cancellationToken);
     }
 }

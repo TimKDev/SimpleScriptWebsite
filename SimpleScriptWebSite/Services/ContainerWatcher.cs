@@ -11,7 +11,8 @@ public class ContainerWatcher : BackgroundService
     private readonly SandboxerConfig _sandboxerConfig;
     private readonly ILogger<ContainerWatcher> _logger;
 
-    public ContainerWatcher(IContainerOrchestrator containerOrchestrator, IOptions<SandboxerConfig> sandboxerConfig, ILogger<ContainerWatcher> logger)
+    public ContainerWatcher(IContainerOrchestrator containerOrchestrator, IOptions<SandboxerConfig> sandboxerConfig,
+        ILogger<ContainerWatcher> logger)
     {
         _containerOrchestrator = containerOrchestrator;
         _sandboxerConfig = sandboxerConfig.Value;
@@ -23,10 +24,23 @@ public class ContainerWatcher : BackgroundService
         _logger.LogInformation("ContainerWatcher starting.");
         while (!stoppingToken.IsCancellationRequested)
         {
-            await _containerOrchestrator.CleanupContainersAsync();
-            _logger.LogInformation("Container cleanup executed.");
+            try
+            {
+                await _containerOrchestrator.CleanupContainersAsync();
+                _logger.LogInformation("Container cleanup executed.");
+            }
+            catch (OperationCanceledException)
+            {
+                _logger.LogInformation("Container cleanup canceled.");
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message);
+            }
+
             await Task.Delay(TimeSpan.FromSeconds(_sandboxerConfig.WatcherCheckIntervalInSeconds), stoppingToken);
         }
+
         _logger.LogInformation("ContainerWatcher stopping.");
     }
 }

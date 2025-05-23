@@ -21,12 +21,18 @@ builder.Services.AddHostedService<ContainerWatcher>();
 builder.Services.Configure<SandboxerConfig>(builder.Configuration.GetSection("Sandboxer"));
 
 var app = builder.Build();
+
 app.UseHttpsRedirection();
 
 if (app.Environment.IsDevelopment())
 {
+    // You might keep UseDeveloperExceptionPage for more detailed dev-time errors,
+    // or rely solely on your custom middleware. If kept, ErrorHandlingMiddleware
+    // will catch it first if placed before.
     app.UseDeveloperExceptionPage();
 }
+
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseAuthorization();
 app.UseWebSockets(new WebSocketOptions

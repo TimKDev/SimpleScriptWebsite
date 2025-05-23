@@ -38,20 +38,33 @@ public class ContainerManager : IContainerManager
 
         if (!await _containerOrchestrator.IsUserAllowedToStartContainerAsync(userIdentifier))
         {
-            _logger.LogWarning("User {UserIdentifier} is not allowed to start a new container (limit exceeded or cleanup in progress).", userIdentifier);
+            _logger.LogWarning(
+                "User {UserIdentifier} is not allowed to start a new container (limit exceeded or cleanup in progress).",
+                userIdentifier);
             return ContainerCreationResult.Create(ContainerCreationStatus.ContainerLimitExceeded);
         }
 
-        var createdContainer = await _containerRepository.CreateAndStartContainerAsync(CreateStartCommand(dllFileName, args), ["/ConsoleApp:/app"], 50, 0.005, cancellationToken);
-        _logger.LogInformation("Container created with ID: {ContainerId} for user {UserIdentifier}", createdContainer.ContainerId, userIdentifier);
+        var createdContainer = await _containerRepository.CreateAndStartContainerAsync(
+            CreateStartCommand(dllFileName, args),
+            ["/ConsoleApp:/app"],
+            memoryLimitInMb: 20,
+            cpuLimitInPercent: 10,
+            cancellationToken
+        );
+        _logger.LogInformation("Container created with ID: {ContainerId} for user {UserIdentifier}",
+            createdContainer.ContainerId, userIdentifier);
 
         if (!_containerOrchestrator.TryAddContainer(userIdentifier, createdContainer))
         {
-            _logger.LogWarning("Failed to add container {ContainerId} to orchestrator for user {UserIdentifier}. Cleaning up container.", createdContainer.ContainerId, userIdentifier);
+            _logger.LogWarning(
+                "Failed to add container {ContainerId} to orchestrator for user {UserIdentifier}. Cleaning up container.",
+                createdContainer.ContainerId, userIdentifier);
             await createdContainer.Cleanup();
             return ContainerCreationResult.Create(ContainerCreationStatus.ContainerLimitExceeded);
         }
-        _logger.LogInformation("Container {ContainerId} successfully added to orchestrator for user {UserIdentifier}.", createdContainer.ContainerId, userIdentifier);
+
+        _logger.LogInformation("Container {ContainerId} successfully added to orchestrator for user {UserIdentifier}.",
+            createdContainer.ContainerId, userIdentifier);
 
         return ContainerCreationResult.Create(createdContainer, userIdentifier);
     }

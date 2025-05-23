@@ -34,14 +34,14 @@ public class ContainerRepository : IContainerRepository
     public async Task<ContainerSession> CreateAndStartContainerAsync(
         string startCommand,
         List<string> binds,
-        int? memoryLimitInMb = null,
+        double? memoryLimitInMb = null,
         double? cpuLimitInPercent = null,
         CancellationToken cancellationToken = default)
     {
         await BuildConsoleAppImageAsync(cancellationToken);
 
-        var cpuShares = cpuLimitInPercent.HasValue ? (long)(cpuLimitInPercent.Value * 1024) : 0;
-        var memoryLimitBytes = memoryLimitInMb.HasValue ? (long)memoryLimitInMb.Value * 1024 * 1024 : 0;
+        var nanoCpus = cpuLimitInPercent.HasValue ? (long)(cpuLimitInPercent.Value / 100.0 * 1_000_000_000L) : 0L;
+        var memoryLimitBytes = memoryLimitInMb.HasValue ? (long)(memoryLimitInMb.Value * 1024.0 * 1024.0) : 0L;
 
         var createResponse = await _client.Containers.CreateContainerAsync(
             new CreateContainerParameters
@@ -54,7 +54,7 @@ public class ContainerRepository : IContainerRepository
                 HostConfig = new HostConfig
                 {
                     Memory = memoryLimitBytes,
-                    CPUShares = cpuShares,
+                    NanoCPUs = nanoCpus,
                     Binds = binds,
                 },
                 Cmd = ["/bin/bash", "-c", startCommand]

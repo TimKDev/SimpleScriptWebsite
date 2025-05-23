@@ -218,6 +218,7 @@ const handleRunCode = () => {
     socket.value = new WebSocket(wsUrl);
 
     socket.value.onopen = () => {
+      console.log("Socket open")
       if (!socket.value) {
         // This case should ideally not be reached if onopen is called
         console.error('WebSocket onopen called but socket is null');
@@ -254,6 +255,7 @@ const handleRunCode = () => {
     };
 
     socket.value.onclose = () => {
+      console.log("Websocket closed");
       socket.value = null;
       isRunning.value = false;
     };

@@ -10,7 +10,7 @@ public interface IContainerRepository
 
     Task<ContainerSession> CreateAndStartContainerAsync(string startCommand,
         List<string> binds,
-        int? memoryLimitInMb = null,
+        double? memoryLimitInMb = null,
         double? cpuLimitInPercent = null,
         CancellationToken cancellationToken = default);
 }
