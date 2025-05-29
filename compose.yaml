@@ -17,10 +17,12 @@
     volumes:
       - ./certs/client/client.pem:/certs/client/cert.pem:ro
       - ./certs/client/client-key.pem:/certs/client/key.pem:ro
-      - /home/tim/Source/projects/SimpleScriptWebSite/Dockerfiles/Dockerfile:/Dockerfile
+      - ./Dockerfiles/Dockerfile:/Dockerfile:ro
 
   docker:
-    image: docker:dind
+    build:
+      context: .
+      dockerfile: docker-dind.Dockerfile
     privileged: true
     ports:
       - "2376:2376"
@@ -32,8 +34,6 @@
       - ./certs/server/server-key.pem:/certs/server/key.pem:ro
       - ./certs/ca.pem:/certs/server/ca.pem:ro
       - ./daemon.json:/etc/docker/daemon.json:ro
-      # TODO Hier sollte ein Host unabhängiger Pfad stehen!
-      - /home/tim/Source/projects/SimpleScriptWebSite/ConsoleApp:/ConsoleApp
 
 volumes:
   docker-data:
