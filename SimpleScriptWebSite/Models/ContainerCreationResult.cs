@@ -1,25 +1,25 @@
+using SimpleScriptWebSite.Services;
+
 namespace SimpleScriptWebSite.Models;
 
 public class ContainerCreationResult
 {
-    public ContainerCreationStatus Status { get; }
-    public ContainerSession? Session { get; }
-    public string? UserIdentifier { get; }
+    public AddContainerStatus Status { get; }
+    public UserSessionResources? Resource { get; }
 
-    private ContainerCreationResult(ContainerCreationStatus status, ContainerSession? session, string? userIdentifier)
+    private ContainerCreationResult(AddContainerStatus status, UserSessionResources? resource)
     {
-        Session = session;
-        UserIdentifier = userIdentifier;
+        Resource = resource;
         Status = status;
     }
 
-    public static ContainerCreationResult Create(ContainerSession session, string userIdentifier)
+    public static ContainerCreationResult Create(UserSessionResources session)
     {
-        return new ContainerCreationResult(ContainerCreationStatus.Success, session, userIdentifier);
+        return new ContainerCreationResult(AddContainerStatus.Success, session);
     }
 
-    public static ContainerCreationResult Create(ContainerCreationStatus status)
+    public static ContainerCreationResult Create(AddContainerStatus status)
     {
-        return new ContainerCreationResult(status, null, null);
+        return new ContainerCreationResult(status, null);
     }
 }

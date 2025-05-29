@@ -1,8 +1,7 @@
 namespace SimpleScriptWebSite.Models;
 
-public enum ContainerCreationStatus
+public enum AddContainerStatus
 {
     Success,
-    ContainerLimitExceeded,
-    MissingFingerPrintForUser
+    ContainerLimitExceeded
 }

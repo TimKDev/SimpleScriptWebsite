@@ -1,22 +1,20 @@
 using Microsoft.Extensions.Options;
-using SimpleScriptWebSite.Interfaces;
 using SimpleScriptWebSite.Models;
-using Microsoft.Extensions.Logging;
 
 namespace SimpleScriptWebSite.Services;
 
 public class ContainerWatcher : BackgroundService
 {
-    private readonly IContainerOrchestrator _containerOrchestrator;
     private readonly SandboxerConfig _sandboxerConfig;
+    private readonly IUserSessionRessourceService _userSessionRessourceService;
     private readonly ILogger<ContainerWatcher> _logger;
 
-    public ContainerWatcher(IContainerOrchestrator containerOrchestrator, IOptions<SandboxerConfig> sandboxerConfig,
-        ILogger<ContainerWatcher> logger)
+    public ContainerWatcher(IOptions<SandboxerConfig> sandboxerConfig,
+        ILogger<ContainerWatcher> logger, IUserSessionRessourceService userSessionRessourceService)
     {
-        _containerOrchestrator = containerOrchestrator;
         _sandboxerConfig = sandboxerConfig.Value;
         _logger = logger;
+        _userSessionRessourceService = userSessionRessourceService;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -26,8 +24,7 @@ public class ContainerWatcher : BackgroundService
         {
             try
             {
-                await _containerOrchestrator.CleanupContainersAsync();
-                _logger.LogInformation("Container cleanup executed.");
+                await _userSessionRessourceService.CleanupResourcesAsync();
             }
             catch (OperationCanceledException)
             {

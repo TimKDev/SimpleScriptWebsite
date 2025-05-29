@@ -8,11 +8,11 @@ public static class ServiceCollectionExtension
 {
     public static IServiceCollection AddSimpleScriptWebSiteServices(this IServiceCollection services)
     {
-        return services.AddSingleton<IContainerOrchestrator, ContainerOrchestrator>()
-            .AddScoped<IInputValidator, InputValidator>()
-            .AddScoped<IWebSocketHandler, WebSocketHandler>()
-            .AddScoped<IContainerManager, ContainerManager>()
-            .AddScoped<IFingerPrintService, FingerPrintService>()
-            .AddScoped<IContainerRepository, ContainerRepository>();
+        return
+            services.AddScoped<IInputValidator, InputValidator>()
+                .AddSingleton<IUserSessionRessourceService, UserSessionRessourceService>()
+                .AddScoped<IWebSocketHandler, WebSocketHandler>()
+                .AddScoped<IFingerPrintService, FingerPrintService>()
+                .AddScoped<IContainerRepository, ContainerRepository>();
     }
 }

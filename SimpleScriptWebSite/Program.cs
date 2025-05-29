@@ -26,9 +26,6 @@ app.UseHttpsRedirection();
 
 if (app.Environment.IsDevelopment())
 {
-    // You might keep UseDeveloperExceptionPage for more detailed dev-time errors,
-    // or rely solely on your custom middleware. If kept, ErrorHandlingMiddleware
-    // will catch it first if placed before.
     app.UseDeveloperExceptionPage();
 }
 

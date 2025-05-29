@@ -1,4 +1,5 @@
 using System.Net.WebSockets;
+using System.Text;
 using Microsoft.Extensions.Options;
 using SimpleScriptWebSite.Extensions;
 using SimpleScriptWebSite.Interfaces;
@@ -9,154 +10,182 @@ namespace SimpleScriptWebSite.Services;
 internal class WebSocketHandler : IWebSocketHandler
 {
     private readonly IInputValidator _inputValidator;
-    private readonly IContainerManager _containerManager;
     private readonly SandboxerConfig _sandboxerConfig;
-    private readonly IContainerOrchestrator _containerOrchestrator;
     private readonly ILogger<WebSocketHandler> _logger;
+    private readonly IUserSessionRessourceService _userSessionRessourceService;
+    private readonly IFingerPrintService _fingerPrintService;
+    private readonly IContainerRepository _containerRepository;
 
-    public WebSocketHandler(IInputValidator inputValidator, IContainerManager containerManager,
+    public const string ExecutionCompletedMessage = "EXECUTION_COMPLETED";
+
+    public WebSocketHandler(IInputValidator inputValidator,
         IOptions<SandboxerConfig> sandboxerConfig,
-        IContainerOrchestrator containerOrchestrator, ILogger<WebSocketHandler> logger)
+        ILogger<WebSocketHandler> logger,
+        IUserSessionRessourceService userSessionRessourceService, IFingerPrintService fingerPrintService,
+        IContainerRepository containerRepository)
     {
         _inputValidator = inputValidator;
-        _containerManager = containerManager;
-        _containerOrchestrator = containerOrchestrator;
         _logger = logger;
+        _userSessionRessourceService = userSessionRessourceService;
+        _fingerPrintService = fingerPrintService;
+        _containerRepository = containerRepository;
         _sandboxerConfig = sandboxerConfig.Value;
     }
 
     public async Task HandleWebSocketConnectionAsync(WebSocket webSocket, CancellationToken cancellationToken)
     {
-        try //This try is the global Error handling of the web socket.
+        ContainerCreationResult? creationResult = null;
+        try
         {
-            using var timeoutCts =
-                new CancellationTokenSource(
-                    TimeSpan.FromSeconds(_sandboxerConfig.AllowedMaxLifeTimeContainerInSeconds));
-
-            using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, timeoutCts.Token);
-            ContainerCreationResult? creationResult = null;
-
-            try
+            var startCommand = await webSocket.WaitForMessageAsync(cancellationToken);
+            if (webSocket.State == WebSocketState.Closed)
             {
-                var startCommand = await webSocket.WaitForMessageAsync(linkedCts.Token);
-                if (webSocket.State == WebSocketState.Closed)
-                {
-                    return;
-                }
-
-                if (!_inputValidator.ValidateStartCommand(startCommand))
-                {
-                    await webSocket.CloseAsync(WebSocketCloseStatus.PolicyViolation, "Start Command is invalid",
-                        cancellationToken);
-                    return;
-                }
-
-                using var executionCompletedCts = new CancellationTokenSource();
-                using var linkedCtsExecution =
-                    CancellationTokenSource.CreateLinkedTokenSource(executionCompletedCts.Token, linkedCts.Token);
-
-                creationResult =
-                    await StartDockerSessionAsync(webSocket, _sandboxerConfig.DllFileName, [startCommand],
-                        executionCompletedCts);
-
-                if (creationResult.Status != ContainerCreationStatus.Success)
-                {
-                    await webSocket.CloseAsync(WebSocketCloseStatus.PolicyViolation,
-                        "Container creation is not allowed.",
-                        cancellationToken);
-                    return;
-                }
-
-                await PassInputsOnToContainer(webSocket, creationResult.Session!, linkedCtsExecution.Token);
+                return;
             }
-            catch (OperationCanceledException)
+
+            if (!_inputValidator.ValidateStartCommand(startCommand))
             {
-                if (timeoutCts.IsCancellationRequested && webSocket.State == WebSocketState.Open)
-                {
-                    await webSocket.CloseAsync(
-                        WebSocketCloseStatus.NormalClosure,
-                        "Connection timeout after 30 seconds",
-                        CancellationToken.None);
-                }
+                await CloseWebsocketAsPolicyViolationAsync(webSocket, "Start Command is invalid", cancellationToken);
+                return;
             }
-            finally
+
+            var userIdentifier = _fingerPrintService.GetUserIdentifier();
+            if (userIdentifier is null)
             {
-                if (creationResult?.UserIdentifier != null)
-                {
-                    await _containerOrchestrator.RemoveResourcesForUserAsync(creationResult.UserIdentifier);
-                }
+                var message = "Cannot start container: Missing fingerprint for user.";
+                await CloseWebsocketAsPolicyViolationAsync(webSocket, message, cancellationToken);
+                return;
             }
+
+            _logger.LogInformation("Attempting to start .NET runtime container for DLL: {DllFileName}",
+                _sandboxerConfig.DllFileName);
+
+            if (!_userSessionRessourceService.TryReservingResourceEntryForUser(userIdentifier, webSocket))
+            {
+                await CloseWebsocketAsPolicyViolationAsync(webSocket,
+                    $"User {userIdentifier} is not allowed to start a new container.", cancellationToken);
+                return;
+            }
+
+            var createdContainer = await _containerRepository.CreateAndStartContainerAsync(
+                CreateStartCommand(_sandboxerConfig.DllFileName, startCommand),
+                ["/ConsoleApp:/app"],
+                memoryLimitInMb: _sandboxerConfig.MaxMemoryInMbPerContainer,
+                cpuLimitInPercent: _sandboxerConfig.MaxCpuInPercentPerContainer,
+                cancellationToken
+            );
+
+            _logger.LogInformation("Container created with ID: {ContainerId} for user {UserIdentifier}",
+                createdContainer.ContainerId, userIdentifier);
+
+            creationResult =
+                await _userSessionRessourceService.TryAddContainerAsync(userIdentifier, createdContainer,
+                    cancellationToken);
+
+            if (creationResult.Status != AddContainerStatus.Success)
+            {
+                await webSocket.CloseAsync(WebSocketCloseStatus.PolicyViolation,
+                    "Container creation is not allowed.",
+                    cancellationToken);
+                return;
+            }
+
+            var resource = creationResult.Resource!;
+            resource.Container!.OutputReceived += OnOutputReceivedAsync(webSocket, cancellationToken, resource);
+            resource.Container.ErrorReceived += OnErrorReceivedAsync(webSocket, resource, cancellationToken);
+
+            await PassInputsOnToContainer(resource, cancellationToken);
         }
         catch (Exception e)
         {
             _logger.LogError(e, $"Unhandeled Websocket error occured: {e.Message}");
         }
+        finally
+        {
+            if (creationResult?.Resource is not null)
+            {
+                await _userSessionRessourceService.CleanupResourceByIdAsync(creationResult.Resource.ResourceId);
+            }
+        }
     }
 
-    private async Task PassInputsOnToContainer(WebSocket webSocket, ContainerSession dockerSession,
+    private async Task CloseWebsocketAsPolicyViolationAsync(WebSocket webSocket, string message,
         CancellationToken cancellationToken)
     {
-        while (webSocket.State == WebSocketState.Open)
-        {
-            try
-            {
-                var message = await webSocket.WaitForMessageAsync(cancellationToken);
-                if (webSocket.State == WebSocketState.Closed)
-                {
-                    return;
-                }
-
-                if (!_inputValidator.ValidateInput(message))
-                {
-                    await webSocket.SendMessageAsync("Invalid input.", cancellationToken);
-                    continue;
-                }
-
-                await dockerSession.SendInputAsync(message, cancellationToken);
-            }
-            catch (ObjectDisposedException)
-            {
-                return;
-            }
-            catch (OperationCanceledException)
-            {
-                return;
-            }
-        }
+        _logger.LogWarning(message);
+        await webSocket.CloseAsync(WebSocketCloseStatus.PolicyViolation, message, cancellationToken);
     }
 
-    private async Task<ContainerCreationResult> StartDockerSessionAsync(WebSocket webSocket, string consoleFileName,
-        string[] args,
-        CancellationTokenSource executionCompletedCts)
+    private string CreateStartCommand(string dllFileName, string? args)
     {
-        var containerCreationResult =
-            await _containerManager.StartDotNetRuntimeContainerAsync(consoleFileName, executionCompletedCts.Token,
-                args);
+        //Shebang is used in order for the ExecutionCompleteMessage to be sent after script is complete
+        var startCommand = new StringBuilder();
+        startCommand.AppendLine("#!/bin/sh");
+        startCommand.Append($"dotnet /app/{dllFileName}");
 
-        if (containerCreationResult.Status != ContainerCreationStatus.Success)
+        if (!string.IsNullOrWhiteSpace(args))
         {
-            return containerCreationResult;
+            startCommand.Append(" " + args);
         }
 
-        var containerSession = containerCreationResult.Session!;
+        //Notify output receiver that start command is finished.
+        startCommand.AppendLine();
+        startCommand.Append($"echo \"{ExecutionCompletedMessage}\"");
+        var commandString = startCommand.ToString();
+        _logger.LogDebug("Created start command for DLL {DllFileName}: {StartCommand}", dllFileName, commandString);
+        return commandString;
+    }
 
-        containerSession.OutputReceived += async (_, output) =>
+    private EventHandler<string>? OnErrorReceivedAsync(WebSocket webSocket, UserSessionResources resource,
+        CancellationToken cancellationToken)
+    {
+        return async (_, error) =>
         {
             try
             {
-                if (executionCompletedCts.IsCancellationRequested)
+                resource.ReceivedOutputOrError();
+
+                if (resource.NumberReceivedOutputs > _sandboxerConfig.MaxOutputsPerContainer)
                 {
+                    await resource.CleanupAsync();
                     return;
                 }
 
+                if (!string.IsNullOrEmpty(error))
+                {
+                    await webSocket.SendMessageAsync($"error:{error}", cancellationToken);
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Error in WebSocket ErrorReceived event handler: {Message}", e.Message);
+            }
+        };
+    }
+
+    private EventHandler<string>? OnOutputReceivedAsync(WebSocket webSocket, CancellationToken cancellationToken,
+        UserSessionResources resource)
+    {
+        return async (_, output) =>
+        {
+            try
+            {
                 if (string.IsNullOrEmpty(output))
                 {
                     return;
                 }
 
-                if (output == ContainerManager.ExecutionCompletedMessage + "\n")
+                if (output == ExecutionCompletedMessage + "\n")
                 {
-                    await executionCompletedCts.CancelAsync();
+                    await resource.CleanupAsync();
+                    return;
+                }
+
+                resource.ReceivedOutputOrError();
+
+                if (resource.NumberReceivedOutputs > _sandboxerConfig.MaxOutputsPerContainer)
+                {
+                    await resource.CleanupAsync();
                     return;
                 }
 
@@ -165,29 +194,62 @@ internal class WebSocketHandler : IWebSocketHandler
                     return;
                 }
 
-                await webSocket.SendMessageAsync($"output:{output}", executionCompletedCts.Token);
+                await webSocket.SendMessageAsync($"output:{output}", cancellationToken);
             }
             catch (Exception e)
             {
                 _logger.LogError(e, "Error in WebSocket OutputReceived event handler: {Message}", e.Message);
             }
         };
+    }
 
-        containerSession.ErrorReceived += async (_, error) =>
+    private async Task PassInputsOnToContainer(UserSessionResources resource,
+        CancellationToken cancellationToken)
+    {
+        var webSocket = resource.WebSocket;
+        while (webSocket.State == WebSocketState.Open)
         {
             try
             {
-                if (!string.IsNullOrEmpty(error) && !executionCompletedCts.IsCancellationRequested)
-                {
-                    await webSocket.SendMessageAsync($"error:{error}", executionCompletedCts.Token);
-                }
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, "Error in WebSocket ErrorReceived event handler: {Message}", e.Message);
-            }
-        };
+                var buffer = new byte[1024 * 4];
+                var receiveResult = await webSocket.ReceiveAsync(
+                    new ArraySegment<byte>(buffer), cancellationToken);
 
-        return containerCreationResult;
+                if (receiveResult.MessageType == WebSocketMessageType.Close)
+                {
+                    _logger.LogInformation("Client requested closing the websocket connection.");
+                    await resource.CleanupAsync();
+                    return;
+                }
+
+                if (receiveResult.MessageType != WebSocketMessageType.Text)
+                {
+                    _logger.LogInformation("Client send invalid message type via websocket. Closing connection.");
+                    await resource.CleanupAsync();
+                    return;
+                }
+
+                if (receiveResult.Count > 1024 * 4)
+                {
+                    _logger.LogInformation("Message size sent by client via websocket is too big. Closing connection.");
+                    await resource.CleanupAsync();
+                    return;
+                }
+
+                var message = Encoding.UTF8.GetString(buffer, 0, receiveResult.Count);
+                if (!_inputValidator.ValidateInput(message))
+                {
+                    _logger.LogInformation("User provided invalid input to websocket.");
+                    await webSocket.SendMessageAsync("Invalid input.", cancellationToken);
+                    continue;
+                }
+
+                await resource.Container!.SendInputAsync(message, cancellationToken);
+            }
+            catch (ObjectDisposedException)
+            {
+                return;
+            }
+        }
     }
 }

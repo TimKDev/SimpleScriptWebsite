@@ -1,76 +1,98 @@
 using System.Collections.Concurrent;
 using System.Net.WebSockets;
+using System.Text;
 using Microsoft.Extensions.Options;
 using SimpleScriptWebSite.Interfaces;
 using SimpleScriptWebSite.Models;
 
 namespace SimpleScriptWebSite.Services;
 
-public class UserSessionRessourceService
+public class UserSessionRessourceService : IUserSessionRessourceService
 {
     private readonly ConcurrentDictionary<Guid, UserSessionResources?> _allocatedResources = new();
     private readonly ILogger<UserSessionRessourceService> _logger;
     private readonly SandboxerConfig _sandboxerConfig;
-    private readonly IFingerPrintService _fingerPrintService;
-    private readonly IContainerRepository _containerRepository;
+
 
     public UserSessionRessourceService(ILogger<UserSessionRessourceService> logger,
-        IOptions<SandboxerConfig> sandboxerConfig, IFingerPrintService fingerPrintService,
-        IContainerRepository containerRepository)
+        IOptions<SandboxerConfig> sandboxerConfig)
     {
         _logger = logger;
-        _fingerPrintService = fingerPrintService;
-        _containerRepository = containerRepository;
         _sandboxerConfig = sandboxerConfig.Value;
     }
 
-    public async Task CreateAsync(WebSocket webSocket, string startCommand, CancellationToken cancellationToken)
+    public async Task CleanupResourcesAsync()
     {
-        _logger.LogInformation("Attempting to start .NET runtime container for DLL: {DllFileName}",
-            _sandboxerConfig.DllFileName);
-        var userIdentifier = _fingerPrintService.GetUserIdentifier();
-        if (userIdentifier is null)
+        var entriesForCleanup = new List<UserSessionResources>();
+        foreach (var resource in _allocatedResources)
         {
-            _logger.LogWarning("Cannot start container: Missing fingerprint for user.");
-            return ContainerCreationResult.Create(ContainerCreationStatus.MissingFingerPrintForUser);
+            if (resource.Value is null)
+            {
+                continue;
+            }
+
+            if (resource.Value.StartedAt <
+                DateTime.UtcNow.AddSeconds(-_sandboxerConfig.AllowedMaxLifeTimeContainerInSeconds) ||
+                resource.Value.Status is ResourceStatus.Disposed)
+            {
+                _logger.LogInformation(
+                    "Container {ContainerId} for user {UserIdentifier} has expired (started at {StartTime}). Marked for cleanup.",
+                    resource.Value.Container?.ContainerId, resource.Key, resource.Value.StartedAt);
+                entriesForCleanup.Add(resource.Value);
+            }
         }
 
-        if (!await IsUserAllowedToStartContainerAsync(userIdentifier))
+        _logger.LogInformation("Found {Count} resources to clean up.", entriesForCleanup.Count);
+        foreach (var resource in entriesForCleanup)
         {
-            _logger.LogWarning(
-                "User {UserIdentifier} is not allowed to start a new container (limit exceeded or cleanup in progress).",
-                userIdentifier);
-            return ContainerCreationResult.Create(ContainerCreationStatus.ContainerLimitExceeded);
+            await resource.CleanupAsync();
+            _allocatedResources.TryRemove(resource.ResourceId, out _);
         }
 
-        var createdContainer = await _containerRepository.CreateAndStartContainerAsync(
-            CreateStartCommand(_sandboxerConfig.DllFileName, args),
-            ["/ConsoleApp:/app"],
-            memoryLimitInMb: _sandboxerConfig.MaxMemoryInMbPerContainer,
-            cpuLimitInPercent: _sandboxerConfig.MaxCpuInPercentPerContainer,
-            cancellationToken
-        );
-        _logger.LogInformation("Container created with ID: {ContainerId} for user {UserIdentifier}",
-            createdContainer.ContainerId, userIdentifier);
-
-        if (!_containerOrchestrator.TryAddContainer(userIdentifier, createdContainer))
-        {
-            _logger.LogWarning(
-                "Failed to add container {ContainerId} to orchestrator for user {UserIdentifier}. Cleaning up container.",
-                createdContainer.ContainerId, userIdentifier);
-            await createdContainer.Cleanup();
-            return ContainerCreationResult.Create(ContainerCreationStatus.ContainerLimitExceeded);
-        }
-
-        _logger.LogInformation("Container {ContainerId} successfully added to orchestrator for user {UserIdentifier}.",
-            createdContainer.ContainerId, userIdentifier);
-
-        return ContainerCreationResult.Create(createdContainer, userIdentifier);
+        _logger.LogInformation("Container cleanup task finished.");
     }
 
-    private async Task<bool> IsUserAllowedToStartContainerAsync(string userIdentifier)
+    public async Task CleanupResourceByIdAsync(Guid resourceId)
     {
-        if (_allocatedResources.Keys.Count > _sandboxerConfig.MaxTotalNumberContainers)
+        if (_allocatedResources.TryGetValue(resourceId, out var userSessionResources) &&
+            userSessionResources is not null)
+        {
+            await userSessionResources.CleanupAsync();
+            _allocatedResources.TryRemove(resourceId, out _);
+        }
+    }
+
+    public async Task<ContainerCreationResult> TryAddContainerAsync(string userIdentifier,
+        ContainerSession container,
+        CancellationToken cancellationToken)
+    {
+        foreach (var allocatedResource in _allocatedResources)
+        {
+            if (allocatedResource.Value is { Status: ResourceStatus.Pending } &&
+                allocatedResource.Value.UserId == userIdentifier)
+            {
+                allocatedResource.Value.Activate(container);
+
+                _logger.LogInformation(
+                    "Container {ContainerId} successfully added to resources for user {UserIdentifier}.",
+                    container.ContainerId, userIdentifier);
+
+                return ContainerCreationResult.Create(allocatedResource.Value);
+            }
+        }
+
+        _logger.LogWarning(
+            "Failed to add container {ContainerId} to orchestrator for user {UserIdentifier}. Cleaning up container.",
+            container.ContainerId, userIdentifier);
+
+        await container.Cleanup();
+
+        return ContainerCreationResult.Create(AddContainerStatus.ContainerLimitExceeded);
+    }
+
+    public bool TryReservingResourceEntryForUser(string userIdentifier, WebSocket webSocket)
+    {
+        if (_allocatedResources.Keys.Count >= _sandboxerConfig.MaxTotalNumberContainers)
         {
             _logger.LogWarning("Max total number of containers ({MaxContainers}) exceeded. Triggering cleanup.",
                 _sandboxerConfig.MaxTotalNumberContainers);
@@ -78,11 +100,13 @@ public class UserSessionRessourceService
             return false;
         }
 
-        // TryAdd is used to reserve a slot conceptually. The actual container info is added later.
-        if (_allocatedResources.Values.Count(r => r?.UserId == userIdentifier) <=
+        if (_allocatedResources.Values.Count(r => r?.UserId == userIdentifier) <
             _sandboxerConfig.MaxNumberContainersPerUser)
         {
-            _logger.LogInformation("User {UserIdentifier} allowed to start a container.",
+            var resourceId = Guid.NewGuid();
+            _allocatedResources.TryAdd(resourceId, new UserSessionResources(resourceId, userIdentifier, webSocket));
+
+            _logger.LogInformation("User {UserIdentifier} allowed to start a container and a resource is reserved.",
                 userIdentifier);
 
             return true;
