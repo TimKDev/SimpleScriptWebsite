@@ -46,7 +46,7 @@ The following steps were necessary to archive this:
 6. The Connection to the DinD Container needes to be modified in the C# Code in order to use the Client certificate.
 
 ### Certificate generation with `openssl`
-
+The following steps can be executed by running the script `Scripts/generate-certs.sh`. As Common Name an arbitrary string needs to be prompted, but "." is not allowed. 
 1. `mkdir -p certs/client certs/server`
 2. `openssl genrsa -aes256 -out certs/ca-key.pem 4096`: Create private Key for Custom CA.
 3. `openssl req -new -x509 -days 365 -key certs/ca-key.pem -sha256 -out certs/ca.pem`: Create public certificate for

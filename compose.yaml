@@ -24,8 +24,6 @@
       context: .
       dockerfile: docker-dind.Dockerfile
     privileged: true
-    ports:
-      - "2376:2376"
     # Override the default command to prevent conflicting flags with daemon.json
     command: [ "dockerd" ]
     volumes:

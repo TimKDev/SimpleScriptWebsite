@@ -72,17 +72,17 @@
       <!-- Editor Section -->
       <div id="editorSection" ref="editorSectionDiv" class="flex flex-col flex-grow">
         <h2 class="text-xl md:text-2xl text-purple-400 mb-4">Code Editor</h2>
-        
+
         <!-- Code Editor with Line Numbers -->
         <div class="relative w-full bg-[#1f2028] rounded-lg mb-4 overflow-hidden h-[50vh] md:h-[60vh]">
           <!-- Line Numbers -->
-          <div 
+          <div
             ref="lineNumbers"
             class="absolute left-0 top-0 bg-[#161620] text-gray-500 font-mono text-xs md:text-sm leading-5 md:leading-6 p-2 md:p-4 pr-1 md:pr-2 border-r border-gray-600 select-none w-[35px] md:w-[50px] h-full overflow-hidden"
           >
             <div v-for="n in lineCount" :key="n" class="text-right">{{ n }}</div>
           </div>
-          
+
           <!-- Code Textarea -->
           <textarea
             id="codeEditor"
@@ -110,7 +110,7 @@
               tabindex="0"
               @click="sendProgramInput"
             >
-              <span>➤</span> 
+              <span>➤</span>
               <span class="hidden sm:inline">Send Input</span>
             </button>
           </div>
@@ -119,7 +119,7 @@
             :class="[
               'px-4 md:px-4 py-3 md:py-2 rounded-lg flex items-center justify-center gap-2 text-base md:text-sm w-full sm:w-auto sm:ml-4 order-1 sm:order-2 font-semibold shadow-lg transition-all duration-200 hover:shadow-xl',
               isRunning
-                ? isStopping 
+                ? isStopping
                   ? 'bg-gray-600 cursor-not-allowed'
                   : 'bg-red-600 hover:bg-red-700 focus:ring-red-500'
                 : 'bg-purple-600 hover:bg-purple-700 focus:ring-purple-500'
@@ -142,18 +142,18 @@
 
         <div class="bg-[#1f2028] p-3 md:p-4 rounded-lg flex flex-col flex-grow min-h-0 h-[20vh] md:h-[15vh] overflow-auto">
           <h3 class="text-gray-400 mb-2 text-sm md:text-base">Output</h3>
-          
+
           <!-- Loading indicators -->
           <div v-if="isCompiling" class="flex items-center gap-2 text-yellow-400 mb-2">
             <div class="loading-spinner"></div>
             <span class="text-sm">Compiling program...</span>
           </div>
-          
+
           <div v-if="isStopping" class="flex items-center gap-2 text-red-400 mb-2">
             <div class="loading-spinner-red"></div>
             <span class="text-sm">Program is stopped.</span>
           </div>
-          
+
           <pre id="outputArea"
                class="flex-1 overflow-auto font-mono whitespace-pre-wrap text-xs md:text-sm"
                :class="hasErrorOccurred ? 'text-red-400' : 'text-green-400'"
@@ -170,10 +170,10 @@
               SimpleScript is a straightforward programming language designed for simplicity and ease
               of use. Perfect for learning programming concepts and building small applications.
             </p>
-            
+
             <div>
               <h3 class="text-xl text-purple-400 mb-3">Language Syntax & Features:</h3>
-              
+
               <div class="space-y-4">
                 <!-- Variables -->
                 <div class="bg-[#2a2b36] p-4 rounded-lg">
@@ -412,7 +412,7 @@ const handleTabSwitch = (activeTabId: TabId, activeSectionId: SectionId) => {
   [editorTabButton.value, aboutTabButton.value, editorTabButtonMobile.value, aboutTabButtonMobile.value].forEach(tab => {
     tab?.classList.remove('bg-[#2a2b36]');
   });
-  
+
   // Hide all sections
   [editorSectionDiv.value, aboutSectionDiv.value].forEach(section => {
     section?.classList.add('hidden');
@@ -454,7 +454,7 @@ const handleRunCode = () => {
   isCompiling.value = true;
 
   const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-  const wsUrl = `${protocol}://localhost:10000/ws`;
+  const wsUrl = `${protocol}://localhost:40090/ws`;
 
   try {
     socket.value = new WebSocket(wsUrl);
@@ -476,7 +476,7 @@ const handleRunCode = () => {
       if (isCompiling.value) {
         isCompiling.value = false;
       }
-      
+
       if (event.data.startsWith("output:")) {
         const message = event.data.replace(/output:/g, "");
         if (message.startsWith("Error:")) {
