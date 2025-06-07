@@ -11,6 +11,7 @@ USER $APP_UID
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
+ARG BUILD_PROFILE=Production
 WORKDIR /src
 RUN apt-get update && \
     apt-get install -y --no-install-recommends nodejs npm && \
@@ -20,11 +21,12 @@ COPY ["SimpleScriptWebSite/SimpleScriptWebSite.csproj", "SimpleScriptWebSite/"]
 RUN dotnet restore "SimpleScriptWebSite/SimpleScriptWebSite.csproj"
 COPY . .
 WORKDIR "/src/SimpleScriptWebSite"
-RUN dotnet build "SimpleScriptWebSite.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "SimpleScriptWebSite.csproj" -c $BUILD_CONFIGURATION -o /app/build /p:BUILD_PROFILE=$BUILD_PROFILE
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "SimpleScriptWebSite.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+ARG BUILD_PROFILE=Production
+RUN dotnet publish "SimpleScriptWebSite.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false /p:BUILD_PROFILE=$BUILD_PROFILE
 
 FROM base AS final
 WORKDIR /app

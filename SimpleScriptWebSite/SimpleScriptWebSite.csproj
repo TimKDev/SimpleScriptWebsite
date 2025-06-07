@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <BUILD_PROFILE Condition=" '$(BUILD_PROFILE)' == '' ">Production</BUILD_PROFILE>
     </PropertyGroup>
 
     <ItemGroup>
@@ -20,8 +21,10 @@
     </ItemGroup>
 
     <Target Name="BuildVue" BeforeTargets="Build">
+        <Message Text="Building Vue app for $(BUILD_PROFILE)..." Importance="high" />
         <Exec Command="npm install" WorkingDirectory="Frontend" />
-        <Exec Command="npm run build-only" WorkingDirectory="Frontend" />
+        <Exec Condition=" '$(BUILD_PROFILE)' == 'Development' " Command="npm run build-dev" WorkingDirectory="Frontend" />
+        <Exec Condition=" '$(BUILD_PROFILE)' != 'Development' " Command="npm run build-only" WorkingDirectory="Frontend" />
     </Target>
 
 </Project>

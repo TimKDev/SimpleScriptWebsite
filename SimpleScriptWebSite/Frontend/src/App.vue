@@ -74,7 +74,8 @@
         <h2 class="text-xl md:text-2xl text-purple-400 mb-4">Code Editor</h2>
 
         <!-- Code Editor with Line Numbers -->
-        <div class="relative w-full bg-[#1f2028] rounded-lg mb-4 overflow-hidden h-[50vh] md:h-[60vh]">
+        <div
+          class="relative w-full bg-[#1f2028] rounded-lg mb-4 overflow-hidden h-[50vh] md:h-[60vh]">
           <!-- Line Numbers -->
           <div
             ref="lineNumbers"
@@ -95,7 +96,8 @@
           ></textarea>
         </div>
 
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4 sm:gap-0">
+        <div
+          class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4 sm:gap-0">
           <div class="flex items-center flex-grow w-full sm:w-auto order-2 sm:order-1">
             <input
               type="text"
@@ -140,7 +142,8 @@
           </button>
         </div>
 
-        <div class="bg-[#1f2028] p-3 md:p-4 rounded-lg flex flex-col flex-grow min-h-0 h-[20vh] md:h-[15vh] overflow-auto">
+        <div
+          class="bg-[#1f2028] p-3 md:p-4 rounded-lg flex flex-col flex-grow min-h-0 h-[20vh] md:h-[15vh] overflow-auto">
           <h3 class="text-gray-400 mb-2 text-sm md:text-base">Output</h3>
 
           <!-- Loading indicators -->
@@ -167,7 +170,8 @@
           <h2 class="text-xl md:text-2xl text-purple-400 mb-4">About SimpleScript</h2>
           <div class="space-y-4 md:space-y-6">
             <p class="text-gray-300 text-sm md:text-base">
-              SimpleScript is a straightforward programming language designed for simplicity and ease
+              SimpleScript is a straightforward programming language designed for simplicity and
+              ease
               of use. Perfect for learning programming concepts and building small applications.
             </p>
 
@@ -178,7 +182,9 @@
                 <!-- Variables -->
                 <div class="bg-[#2a2b36] p-4 rounded-lg">
                   <h4 class="text-lg text-blue-400 mb-2">Variables</h4>
-                  <p class="text-gray-300 mb-2">Declare variables using the <code class="text-yellow-400">LET</code> keyword. The types of the variables are automatically inferred:</p>
+                  <p class="text-gray-300 mb-2">Declare variables using the <code
+                    class="text-yellow-400">LET</code> keyword. The types of the variables are
+                    automatically inferred:</p>
                   <pre class="text-green-400 bg-[#1f2028] p-2 rounded text-sm">
 LET a = 0
 LET name = "John"
@@ -242,8 +248,11 @@ PRINT add(10, 20)
                   <h4 class="text-lg text-blue-400 mb-2">Data Types</h4>
                   <ul class="text-gray-300 space-y-1">
                     <li>• <code class="text-yellow-400">int</code> - Integer numbers</li>
-                    <li>• <code class="text-yellow-400">string</code> - Text (enclosed in quotes)</li>
-                    <li>• <code class="text-yellow-400">bool</code> - Boolean values: <code class="text-yellow-400">TRUE</code> or <code class="text-yellow-400">FALSE</code></li>
+                    <li>• <code class="text-yellow-400">string</code> - Text (enclosed in quotes)
+                    </li>
+                    <li>• <code class="text-yellow-400">bool</code> - Boolean values: <code
+                      class="text-yellow-400">TRUE</code> or <code
+                      class="text-yellow-400">FALSE</code></li>
                     <li>• Variables are automatically type-inferred from their assigned values</li>
                   </ul>
                 </div>
@@ -270,7 +279,8 @@ PRINT add(10, 20)
                         <li>• <code class="text-yellow-400">&lt;</code> - Less than</li>
                         <li>• <code class="text-yellow-400">&gt;</code> - Greater than</li>
                         <li>• <code class="text-yellow-400">&lt;=</code> - Less than or equal</li>
-                        <li>• <code class="text-yellow-400">&gt;=</code> - Greater than or equal</li>
+                        <li>• <code class="text-yellow-400">&gt;=</code> - Greater than or equal
+                        </li>
                       </ul>
                     </div>
                     <div>
@@ -285,7 +295,8 @@ PRINT add(10, 20)
                 <!-- Boolean Values -->
                 <div class="bg-[#2a2b36] p-4 rounded-lg">
                   <h4 class="text-lg text-blue-400 mb-2">Boolean Values</h4>
-                  <p class="text-gray-300 mb-2">SimpleScript supports boolean logic with predefined constants:</p>
+                  <p class="text-gray-300 mb-2">SimpleScript supports boolean logic with predefined
+                    constants:</p>
                   <pre class="text-green-400 bg-[#1f2028] p-2 rounded text-sm">
 LET is_valid = TRUE
 LET is_false = FALSE
@@ -321,7 +332,8 @@ ENDBODY</pre>
                 <!-- Expression Examples -->
                 <div class="bg-[#2a2b36] p-4 rounded-lg">
                   <h4 class="text-lg text-blue-400 mb-2">Expression Examples</h4>
-                  <p class="text-gray-300 mb-2">Complex expressions with parentheses and multiple operators:</p>
+                  <p class="text-gray-300 mb-2">Complex expressions with parentheses and multiple
+                    operators:</p>
                   <pre class="text-green-400 bg-[#1f2028] p-2 rounded text-sm">
 LET result = (10 + 5) * 2
 LET power = 2 ** 3  // 8
@@ -336,10 +348,11 @@ ENDIF</pre>
 
             <div class="bg-[#2a2b36] p-4 rounded-lg text-gray-300">
               <h4 class="text-lg text-blue-400 mb-2">Getting Started</h4>
-              <p>To get started, switch to the "Try SimpleScript" tab, write your code in the editor,
-              and click "Run" to see the output. The language uses clear, English-like keywords
-              making it easy to read and understand. All operators follow standard mathematical
-              precedence rules, and parentheses can be used to control evaluation order.</p>
+              <p>To get started, switch to the "Try SimpleScript" tab, write your code in the
+                editor,
+                and click "Run" to see the output. The language uses clear, English-like keywords
+                making it easy to read and understand. All operators follow standard mathematical
+                precedence rules, and parentheses can be used to control evaluation order.</p>
             </div>
           </div>
         </div>
@@ -454,7 +467,13 @@ const handleRunCode = () => {
   isCompiling.value = true;
 
   const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-  const wsUrl = `${protocol}://localhost:40090/ws`;
+  let wsUrl: string;
+
+  if (import.meta.env.PROD) {
+    wsUrl = `${protocol}://${window.location.host}/ws`;
+  } else {
+    wsUrl = `${protocol}://localhost:40090/ws`;
+  }
 
   try {
     socket.value = new WebSocket(wsUrl);
@@ -589,8 +608,12 @@ textarea, pre {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Custom scrollbar styling (optional, for WebKit browsers) */

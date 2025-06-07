@@ -8,6 +8,7 @@
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build --outDir ../wwwroot --emptyOutDir",
+    "build-dev": "vite build --mode development --outDir ../wwwroot --emptyOutDir",
     "type-check": "vue-tsc --build",
     "lint": "eslint . --fix",
     "format": "prettier --write src/"

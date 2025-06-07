@@ -4,9 +4,12 @@
     build:
       context: .
       dockerfile: SimpleScriptWebSite/Dockerfile
+      args:
+        BUILD_PROFILE: ${BUILD_PROFILE:-Production}
     ports:
       - "40090:8080"
     environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Production}
       DOCKER_HOST: "https://docker:2376"
       DOCKER_TLS_VERIFY: "1"
       DOCKER_CERT_PATH: "/certs/client"
