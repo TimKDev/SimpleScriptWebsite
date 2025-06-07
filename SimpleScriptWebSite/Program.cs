@@ -53,7 +53,12 @@ app.UseWebSockets(app.Environment.IsDevelopment()
     }
     : new WebSocketOptions
     {
-        KeepAliveInterval = TimeSpan.FromSeconds(15)
+        KeepAliveInterval = TimeSpan.FromSeconds(15),
+        AllowedOrigins =
+        {
+            "http://localhost:3000", "http://localhost:10000", "http://localhost:40090",
+            "https://tim-kempkens.com/simple-script"
+        }
     });
 app.MapControllers();
 app.UseDefaultFiles();

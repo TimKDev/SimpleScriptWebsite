@@ -469,10 +469,10 @@ const handleRunCode = () => {
   const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
   let wsUrl: string;
 
-  if (import.meta.env.VITE_IS_PRODUCTION === 'true') {
-    wsUrl = `${protocol}://${window.location.host}/simple-script/ws`;
-  } else {
+  if (import.meta.env.VITE_IS_PRODUCTION === 'false') {
     wsUrl = `${protocol}://localhost:40090/ws`;
+  } else {
+    wsUrl = `${protocol}://${window.location.host}/simple-script/ws`;
   }
 
   try {
