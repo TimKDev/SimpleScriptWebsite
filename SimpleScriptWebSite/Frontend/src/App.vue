@@ -454,7 +454,7 @@ const handleRunCode = () => {
   isCompiling.value = true;
 
   const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-  const wsUrl = `${protocol}://localhost:10000/ws`;
+  const wsUrl = `${protocol}://localhost:40090/ws`;
 
   try {
     socket.value = new WebSocket(wsUrl);
