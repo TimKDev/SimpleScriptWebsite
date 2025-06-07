@@ -48,17 +48,13 @@ app.UseWebSockets(app.Environment.IsDevelopment()
         AllowedOrigins =
         {
             "http://localhost:3000", "http://localhost:10000", "http://localhost:40090",
-            "https://tim-kempkens.com:40090"
+            "https://tim-kempkens.com:40090",
+            "https://tim-kempkens.com/simple-script"
         }
     }
     : new WebSocketOptions
     {
-        KeepAliveInterval = TimeSpan.FromSeconds(15),
-        AllowedOrigins =
-        {
-            "http://localhost:3000", "http://localhost:10000", "http://localhost:40090",
-            "https://tim-kempkens.com/simple-script"
-        }
+        KeepAliveInterval = TimeSpan.FromSeconds(15)
     });
 app.MapControllers();
 app.UseDefaultFiles();
