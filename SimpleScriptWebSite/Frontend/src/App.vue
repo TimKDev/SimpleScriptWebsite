@@ -470,7 +470,7 @@ const handleRunCode = () => {
   let wsUrl: string;
 
   if (import.meta.env.PROD) {
-    wsUrl = `${protocol}://${window.location.host}/ws`;
+    wsUrl = `${protocol}://${window.location.host}/simple-script/ws`;
   } else {
     wsUrl = `${protocol}://localhost:40090/ws`;
   }
