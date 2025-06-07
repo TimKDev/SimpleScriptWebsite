@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.HttpOverrides;
 using Serilog;
 using SimpleScriptWebSite.Extensions;
 using SimpleScriptWebSite.Models;
@@ -20,7 +21,15 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddHostedService<ContainerWatcher>();
 builder.Services.Configure<SandboxerConfig>(builder.Configuration.GetSection("Sandboxer"));
 
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders =
+        ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+});
+
 var app = builder.Build();
+
+app.UseForwardedHeaders();
 
 app.UseHttpsRedirection();
 
@@ -32,11 +41,20 @@ if (app.Environment.IsDevelopment())
 app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseAuthorization();
-app.UseWebSockets(new WebSocketOptions
-{
-    KeepAliveInterval = TimeSpan.FromSeconds(15),
-    AllowedOrigins = { "http://localhost:3000", "http://localhost:10000", "http://localhost:40090", "https://tim-kempkens.com:40090" }
-});
+app.UseWebSockets(app.Environment.IsDevelopment()
+    ? new WebSocketOptions()
+    {
+        KeepAliveInterval = TimeSpan.FromSeconds(15),
+        AllowedOrigins =
+        {
+            "http://localhost:3000", "http://localhost:10000", "http://localhost:40090",
+            "https://tim-kempkens.com:40090"
+        }
+    }
+    : new WebSocketOptions
+    {
+        KeepAliveInterval = TimeSpan.FromSeconds(15)
+    });
 app.MapControllers();
 app.UseDefaultFiles();
 app.UseStaticFiles();
