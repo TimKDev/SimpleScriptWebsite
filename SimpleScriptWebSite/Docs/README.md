@@ -1,9 +1,8 @@
 ## Debug
 
-Start backend with `docker compose up` or using Rider.
+Start backend with `docker compose up` or using Rider and the frontend in the dev server using `npm run dev`.
 
-The frontend is not automatically reloaded when changes. Use `npm run dev` for running the frontend. For API calls to
-work CORS must be enabled in the api in dev mode.
+The frontend is not automatically reloaded when changes. For API calls to work CORS must be enabled in the api in dev mode. The backend route is determined by the mode of in which vite is running (when running `vite` the following condition is true `import.meta.env.MODE === 'development'` without the need for any .env Files). 
 
 ## Release
 
