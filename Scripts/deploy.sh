@@ -5,7 +5,7 @@ pathToDeploy=myApps/SimpleScriptWebsite/
 CURRENT_DATE=$(date +"%Y-%m-%d %H:%M:%S")
 
 echo "Step 1: Backing up project files to git..."
-cd $pathToProject || exit 1
+cd $pathToProject > /dev/null || exit 1
 git pull > /dev/null || exit 1
 git add . > /dev/null || exit 1
 git commit -m "Backup for Deploy $CURRENT_DATE" > /dev/null || exit 1
